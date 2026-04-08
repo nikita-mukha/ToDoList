@@ -13,10 +13,14 @@ public class Meeting : ToDoItem
         bool isCompleted,
         string place,
         string description = "") 
-        : base(targetDayTime, itemType, description, title, isCompleted)
+        : base(targetDayTime, itemType,title, isCompleted, description)
     {
         InvitedPerson = invitedPerson;
         Place = place;
+    }
+    public override string ToString()
+    {
+        return $"{base.ToString()}, Place: {Place}, Invited: {string.Join(", ", InvitedPerson)}";
     }
     
 }

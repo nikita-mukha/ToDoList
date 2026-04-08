@@ -7,13 +7,18 @@ public class Call : ToDoItem
     public List<string> InvitedPerson {get; set;}
     public Call(DateTime targetDayTime, 
         ToDoItemTypes itemType, 
-        string description, 
         string title, 
         bool isCompleted,
-        List<string> invitedPerson) 
-        : base(targetDayTime, itemType, description, title, isCompleted)
+        List<string> invitedPerson,
+        string description = "") 
+        : base(targetDayTime, itemType, title, isCompleted, description)
     {
         InvitedPerson = invitedPerson;
     }
+    public override string ToString()
+    {
+        return $"{base.ToString()}, Invited: {string.Join(", ", InvitedPerson)}";
+    }
+
 
 }

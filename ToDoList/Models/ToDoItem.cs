@@ -24,7 +24,11 @@ public abstract class ToDoItem
     }
     public override string ToString()
     {
-        return $"Title: {Title}, Date: {TargetDayTime}, Description: {Description}";
+        return $"Title: {Title}, " + 
+               $"Itemtype: {ItemType}, " +
+               $"Date: {TargetDayTime}, " +
+               $"Description: {Description}, " +
+               $"Item status: {IsCompleted}";
     }
     
 }

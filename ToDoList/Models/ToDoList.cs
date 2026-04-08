@@ -37,7 +37,7 @@ public class ToDoList
     public void PrintAllItems()
     {
         foreach (var item in _items)
-            Console.WriteLine($"{item.Title} - {item.ItemType} - {item.Description}");
+            Console.WriteLine(item);
     }
 
     public void PrintOnlyNotCompletedItems()
@@ -86,4 +86,5 @@ public class ToDoList
         foreach (var item in GetItemsBySpecificDate(startDate))
             Console.WriteLine($"{item.Title} - {item.ItemType} - {item.Description}");
     }
+    
 }

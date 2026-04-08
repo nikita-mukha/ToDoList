@@ -12,9 +12,13 @@ public class DateOfBirth : ToDoItem
         bool isCompleted,
         string nameOfPersonWithDoB,
         string description = "")
-        : base(targetDayTime, itemType, description, title, isCompleted)
+        : base(targetDayTime, itemType,title, isCompleted, description)
     {
         this.NameOfPersonWithDoB = nameOfPersonWithDoB;
+    }
+    public override string ToString()
+    {
+        return $"{base.ToString()}, Person: {NameOfPersonWithDoB}";
     }
 
 }
