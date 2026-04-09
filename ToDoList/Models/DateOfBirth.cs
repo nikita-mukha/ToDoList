@@ -14,7 +14,7 @@ public class DateOfBirth : ToDoItem
         string description = "")
         : base(targetDayTime, itemType,title, isCompleted, description)
     {
-        this.NameOfPersonWithDoB = nameOfPersonWithDoB;
+        NameOfPersonWithDoB = nameOfPersonWithDoB;
     }
     public override string ToString()
     {
