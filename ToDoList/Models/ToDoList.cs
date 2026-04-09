@@ -20,7 +20,10 @@ public class ToDoList
         var item = _items.FirstOrDefault(i =>
             i.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
         if (item != null)
+        {
             _items.Remove(item);
+            Console.WriteLine($"Item '{title}' was removed.");
+        }
         else
             Console.WriteLine($"Item '{title}' was not found.");
     }
@@ -30,7 +33,10 @@ public class ToDoList
         var item = _items.FirstOrDefault(i =>
             i.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
         if (item != null)
+        {
             item.IsCompleted = true;
+            Console.WriteLine($"Item '{title}' was completed.");
+        }
         else
             Console.WriteLine($"Item '{title}' was not found.");
     }

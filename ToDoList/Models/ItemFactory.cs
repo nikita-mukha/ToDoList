@@ -6,8 +6,8 @@ public static class ItemFactory
 {
     public static ToDoItem Create()
     {
-        var title = ConsoleUI.AskUser("Enter title:");
-        var description = ConsoleUI.AskUser("Enter description (Optional, press enter to skip):");
+        var title = ConsoleUi.AskUser("Enter title:");
+        var description = ConsoleUi.AskUser("Enter description (Optional, press enter to skip):");
         var targetDayTime = AskDateTime();
         var itemType = AskItemType();
 
@@ -23,13 +23,13 @@ public static class ItemFactory
 
     private static DateTime AskDateTime()
     {
-        var input = ConsoleUI.AskUser("Enter date (format dd/MM/yyyy HH:mm):");
+        var input = ConsoleUi.AskUser("Enter date (format dd/MM/yyyy HH:mm):");
         while (!DateTime.TryParseExact(
                    input, "dd/MM/yyyy HH:mm", null,
                    System.Globalization.DateTimeStyles.None,
                    out _))
         {
-            input = ConsoleUI.AskUser("Invalid date, please try again (format dd/MM/yyyy HH:mm):");
+            input = ConsoleUi.AskUser("Invalid date, please try again (format dd/MM/yyyy HH:mm):");
         }
         DateTime.TryParseExact(input, "dd/MM/yyyy HH:mm", null,
             System.Globalization.DateTimeStyles.None, out DateTime date);
@@ -52,7 +52,7 @@ public static class ItemFactory
 
     private static Call CreateCall(string title, string description, DateTime date)
     {
-        var invitedPersons = ConsoleUI.ReadUserNames("Enter invited person(s) (separate by comma):");
+        var invitedPersons = ConsoleUi.ReadUserNames("Enter invited person(s) (separate by comma):");
         return new Call(
             targetDayTime: date,
             itemType: ToDoItemTypes.Call,
@@ -64,8 +64,8 @@ public static class ItemFactory
 
     private static Meeting CreateMeeting(string title, string description, DateTime date)
     {
-        var invitedPersons = ConsoleUI.ReadUserNames("Enter invited person(s) (separate by comma):");
-        var place = ConsoleUI.AskUser("Enter meeting place:");
+        var invitedPersons = ConsoleUi.ReadUserNames("Enter invited person(s) (separate by comma):");
+        var place = ConsoleUi.AskUser("Enter meeting place:");
         return new Meeting(
             targetDayTime: date,
             itemType: ToDoItemTypes.Meeting,
@@ -78,7 +78,7 @@ public static class ItemFactory
 
     private static DateOfBirth CreateDayOfBirth(string title, string description, DateTime date)
     {
-        var name = ConsoleUI.AskUser("Enter the name of person who's celebrating:");
+        var name = ConsoleUi.AskUser("Enter the name of person who's celebrating:");
         return new DateOfBirth(
             targetDayTime: date,
             itemType: ToDoItemTypes.DayOfBirth,

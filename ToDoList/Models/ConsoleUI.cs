@@ -2,7 +2,7 @@ using ToDoList.Enums;
 
 namespace ToDoList.Models;
 
-public static class ConsoleUI
+public static class ConsoleUi
 {
     public static void PrintSeparator() =>
         Console.WriteLine("\n---------------------------\n");
