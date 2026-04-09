@@ -20,7 +20,7 @@ public class Meeting : ToDoItem
     }
     public override string ToString()
     {
-        return $"{base.ToString()}, Place: {Place}, Invited: {string.Join(", ", InvitedPerson)}";
+        return $"{base.ToString()}\n Place: {Place}\n Invited: {string.Join(", ", InvitedPerson)}";
     }
     
 }

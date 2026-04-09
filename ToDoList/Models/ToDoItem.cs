@@ -28,11 +28,11 @@ public abstract class ToDoItem
     }
     public override string ToString()
     {
-        return $"Title: {Title}, " + 
-               $"Item type: {ItemType}, " +
-               $"Date: {TargetDayTime}, " +
-               $"Description: {Description}, " +
-               $"Item status: {IsCompleted}";
+        return $"\n Title: {Title}\n" + 
+               $" Item type: {ItemType}\n" +
+               $" Date: {TargetDayTime}\n" +
+               $" Description: {Description}\n" +
+               $" Item status: {IsCompleted}";
     }
     
 }

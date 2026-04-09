@@ -4,8 +4,17 @@ namespace ToDoList.Models;
 
 public class ToDoList
 {
-    public List<ToDoItem> _items;
+    private List<ToDoItem> _items;
 
+    public void SaveItems()
+    {
+        ToDoStorage.Save(_items);
+    }
+
+    public void LoadItems()
+    {
+        _items = ToDoStorage.Load();
+    }
     public ToDoList()
     {
         _items = new List<ToDoItem>();
@@ -18,7 +27,8 @@ public class ToDoList
 
     public void RemoveItem(string title)
     {
-        var item = _items.FirstOrDefault(i => i.Title == title);
+        var item = _items.FirstOrDefault(i => 
+            i.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
         if (item != null)
             _items.Remove(item);
         Console.WriteLine($"{title} has been removed");
@@ -26,7 +36,8 @@ public class ToDoList
 
     public void CompleteItem(string title)
     {
-        var item = _items.FirstOrDefault(i => i.Title == title);
+        var item = _items.FirstOrDefault(i => 
+            i.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
         if (item != null)
         {
             item.IsCompleted = true;
@@ -42,12 +53,8 @@ public class ToDoList
 
     public void PrintOnlyNotCompletedItems()
     {
-        foreach (var item in _items)
-        {
-            if (item.IsCompleted == false)
-                Console.WriteLine($"{item.Title} - {item.ItemType} - {item.Description}");
-
-        }
+        foreach (var item in _items.Where(i => !i.IsCompleted))
+            Console.WriteLine(item);
     }
 
     public void PrintOnlyCompletedItems()

@@ -17,7 +17,7 @@ public class Call : ToDoItem
     }
     public override string ToString()
     {
-        return $"{base.ToString()}, Invited: {string.Join(", ", InvitedPerson)}";
+        return $"{base.ToString()}\n Invited: {string.Join(", ", InvitedPerson)}";
     }
 
 

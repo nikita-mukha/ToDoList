@@ -18,7 +18,7 @@ public class DateOfBirth : ToDoItem
     }
     public override string ToString()
     {
-        return $"{base.ToString()}, Person: {NameOfPersonWithDoB}";
+        return $"{base.ToString()}\n Person: {NameOfPersonWithDoB}";
     }
 
 }
