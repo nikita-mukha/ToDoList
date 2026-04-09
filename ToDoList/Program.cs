@@ -2,6 +2,8 @@
 using ToDoList.Models;
 
 var toDoList1 = new ToDoList.Models.ToDoList();
+toDoList1._items = ToDoStorage.Load();
+
 while(true)
 {
     var choice = int.Parse(PrintAvailableOptions());
@@ -10,12 +12,14 @@ while(true)
     {
         case MenuOptions.AddItem: 
             AddItemInList();
+            ToDoStorage.Save(toDoList1._items);
             break;
         case MenuOptions.RemoveItem:
         {
             Console.WriteLine("Enter the title of the item you want to remove");
             var title = Console.ReadLine();
             toDoList1.RemoveItem(title);
+            ToDoStorage.Save(toDoList1._items);
             break;
         }
         case MenuOptions.CompleteItem:
@@ -23,6 +27,7 @@ while(true)
             Console.WriteLine("Enter the title of the item you want to complete");
             var title = Console.ReadLine();
             toDoList1.CompleteItem(title);
+            ToDoStorage.Save(toDoList1._items);
             break;
             
         }
