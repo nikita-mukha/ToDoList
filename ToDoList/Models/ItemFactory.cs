@@ -1,13 +1,21 @@
 using ToDoList.Enums;
+using ToDoList.Interfaces;
 
 namespace ToDoList.Models;
 
-public static class ItemFactory
+public class ItemFactory
 {
-    public static ToDoItem Create()
+    private readonly IUserInterface _ui;
+
+    public ItemFactory(IUserInterface ui)
     {
-        var title = ConsoleUi.AskUser("Enter title:");
-        var description = ConsoleUi.AskUser("Enter description (Optional, press enter to skip):");
+        _ui = ui;
+    }
+
+    public ToDoItem Create()
+    {
+        var title = _ui.AskUser("Enter title:");
+        var description = _ui.AskUser("Enter description (Optional, press enter to skip):");
         var targetDayTime = AskDateTime();
         var itemType = AskItemType();
 
@@ -21,38 +29,38 @@ public static class ItemFactory
         };
     }
 
-    private static DateTime AskDateTime()
+    private  DateTime AskDateTime()
     {
-        var input = ConsoleUi.AskUser("Enter date (format dd/MM/yyyy HH:mm):");
+        var input = _ui.AskUser("Enter date (format dd/MM/yyyy HH:mm):");
         while (!DateTime.TryParseExact(
                    input, "dd/MM/yyyy HH:mm", null,
                    System.Globalization.DateTimeStyles.None,
                    out _))
         {
-            input = ConsoleUi.AskUser("Invalid date, please try again (format dd/MM/yyyy HH:mm):");
+            input = _ui.AskUser("Invalid date, please try again (format dd/MM/yyyy HH:mm):");
         }
         DateTime.TryParseExact(input, "dd/MM/yyyy HH:mm", null,
             System.Globalization.DateTimeStyles.None, out DateTime date);
         return date;
     }
 
-    private static ToDoItemTypes AskItemType()
+    private ToDoItemTypes AskItemType()
     {
-        Console.WriteLine("What type of item would you like to add?");
+        _ui.PrintMessage("What type of item would you like to add?");
         foreach (var option in Enum.GetValues<ToDoItemTypes>())
-            Console.WriteLine($"{(int)option}. {option}");
+            _ui.PrintMessage($"{(int)option}. {option}");
         while (true)
         {
-            if (int.TryParse(Console.ReadLine(), out int type) &&
+            if (int.TryParse(_ui.AskUser(""), out int type) &&
                 Enum.IsDefined(typeof(ToDoItemTypes), type))
                 return (ToDoItemTypes)type;
-            Console.WriteLine("Invalid input, please try again:");
+            _ui.PrintMessage("Invalid input, please try again:");
         }
     }
 
-    private static Call CreateCall(string title, string description, DateTime date)
+    private Call CreateCall(string title, string description, DateTime date)
     {
-        var invitedPersons = ConsoleUi.ReadUserNames("Enter invited person(s) (separate by comma):");
+        var invitedPersons = _ui.ReadUserNames("Enter invited person(s) (separate by comma):");
         return new Call(
             targetDayTime: date,
             itemType: ToDoItemTypes.Call,
@@ -62,10 +70,10 @@ public static class ItemFactory
             invitedPerson: invitedPersons);
     }
 
-    private static Meeting CreateMeeting(string title, string description, DateTime date)
+    private Meeting CreateMeeting(string title, string description, DateTime date)
     {
-        var invitedPersons = ConsoleUi.ReadUserNames("Enter invited person(s) (separate by comma):");
-        var place = ConsoleUi.AskUser("Enter meeting place:");
+        var invitedPersons = _ui.ReadUserNames("Enter invited person(s) (separate by comma):");
+        var place = _ui.AskUser("Enter meeting place:");
         return new Meeting(
             targetDayTime: date,
             itemType: ToDoItemTypes.Meeting,
@@ -76,9 +84,9 @@ public static class ItemFactory
             place: place);
     }
 
-    private static DateOfBirth CreateDayOfBirth(string title, string description, DateTime date)
+    private DateOfBirth CreateDayOfBirth(string title, string description, DateTime date)
     {
-        var name = ConsoleUi.AskUser("Enter the name of person who's celebrating:");
+        var name = _ui.AskUser("Enter the name of person who's celebrating:");
         return new DateOfBirth(
             targetDayTime: date,
             itemType: ToDoItemTypes.DayOfBirth,
@@ -88,7 +96,7 @@ public static class ItemFactory
             nameOfPersonWithDoB: name);
     }
 
-    private static Task CreateTask(string title, string description, DateTime date)
+    private Task CreateTask(string title, string description, DateTime date)
     {
         return new Task(
             targetDayTime: date,

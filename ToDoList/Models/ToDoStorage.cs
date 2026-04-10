@@ -1,18 +1,23 @@
 using System.Text.Json;
+using ToDoList.Interfaces;
 
 namespace ToDoList.Models;
 
-public static class ToDoStorage
+public class ToDoStorage : IToDoStorage
 {
-    private static readonly string FilePath = "todos.json";
+    private readonly string _filePath;
+    public ToDoStorage(string filePath = "todos.json")
+    {
+        _filePath = filePath;
+    }
 
-    public static void Save(List<ToDoItem> items)
+    public void Save(List<ToDoItem> items)
     {
         try
         { 
             var options = new JsonSerializerOptions { WriteIndented = true }; 
             var json = JsonSerializer.Serialize(items, options); 
-            File.WriteAllText(FilePath, json);
+            File.WriteAllText(_filePath, json);
         
         }
         catch (IOException)
@@ -21,13 +26,13 @@ public static class ToDoStorage
         }
     }
 
-    public static List<ToDoItem> Load()
+    public  List<ToDoItem> Load()
     {
-        if (!File.Exists(FilePath))
+        if (!File.Exists(_filePath))
             return new List<ToDoItem>();
         try
         {
-            var json = File.ReadAllText(FilePath);
+            var json = File.ReadAllText(_filePath);
             return JsonSerializer.Deserialize<List<ToDoItem>>(json) 
                    ?? new List<ToDoItem>();
         }

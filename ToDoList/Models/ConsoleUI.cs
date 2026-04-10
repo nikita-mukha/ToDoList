@@ -1,37 +1,40 @@
 using ToDoList.Enums;
+using ToDoList.Interfaces;
 
 namespace ToDoList.Models;
 
-public static class ConsoleUi
+public class ConsoleUi : IUserInterface
 {
-    public static void PrintSeparator() =>
+    public void PrintMessage(string message) => 
+        Console.WriteLine(message);
+
+    public void PrintSeparator() =>
         Console.WriteLine("\n---------------------------\n");
 
-    public static string AskUser(string prompt)
+    public string AskUser(string prompt)
     {
         Console.WriteLine(prompt);
         return Console.ReadLine() ?? string.Empty;
     }
 
-    public static List<string> ReadUserNames(string prompt) =>
+    public List<string> ReadUserNames(string prompt) =>
         AskUser(prompt).Split(',').ToList();
 
-    public static DateTime AskDate(string prompt)
+    public DateTime AskDate(string prompt)
     {
         var input = AskUser(prompt);
+        DateTime date;
         while (!DateTime.TryParseExact(
                    input, "dd/MM/yyyy", null,
                    System.Globalization.DateTimeStyles.None,
-                   out _))
+                   out date))
         {
             input = AskUser("Invalid date, please try again (format dd/MM/yyyy):");
         }
-        DateTime.TryParseExact(input, "dd/MM/yyyy", null,
-            System.Globalization.DateTimeStyles.None, out DateTime date);
         return date;
     }
 
-    public static int PrintAvailableOptions()
+    public int PrintAvailableOptions()
     {
         PrintSeparator();
         Console.WriteLine("What do you want to do?");
@@ -47,7 +50,7 @@ public static class ConsoleUi
         }
     }
 
-    public static DisplayOptions PrintDisplayOptions()
+    public DisplayOptions PrintDisplayOptions()
     {
         PrintSeparator();
         Console.WriteLine("What would you like to display?");
@@ -63,7 +66,7 @@ public static class ConsoleUi
         }
     }
 
-    public static void PrintItems(List<ToDoItem> items)
+    public void PrintItems(List<ToDoItem> items)
     {
         if (!items.Any())
         {
@@ -74,13 +77,13 @@ public static class ConsoleUi
             Console.WriteLine(item);
     }
 
-    public static void PrintItemsByDateRange(DateTime startDate, DateTime endDate, List<ToDoItem> items)
+    public void PrintItemsByDateRange(DateTime startDate, DateTime endDate, List<ToDoItem> items)
     {
         Console.WriteLine($"Results from {startDate:dd/MM/yyyy} to {endDate:dd/MM/yyyy}:");
         PrintItems(items);
     }
 
-    public static void PrintItemsBySpecificDate(DateTime date, List<ToDoItem> items)
+    public void PrintItemsBySpecificDate(DateTime date, List<ToDoItem> items)
     {
         Console.WriteLine($"Results for {date:dd/MM/yyyy}:");
         PrintItems(items);

@@ -1,44 +1,42 @@
+using ToDoList.Interfaces;
+
 namespace ToDoList.Models;
 
 public class ToDoList
 {
     private List<ToDoItem> _items;
+    private readonly IToDoStorage _storage;
 
-    public ToDoList()
+    public ToDoList(IToDoStorage storage)
     {
+        _storage = storage;
         _items = new List<ToDoItem>();
     }
 
-    public void SaveItems() => ToDoStorage.Save(_items);
+    public void SaveItems() => _storage.Save(_items);
 
-    public void LoadItems() => _items = ToDoStorage.Load();
+    public void LoadItems() => _items = _storage.Load();
 
     public void AddItem(ToDoItem item) => _items.Add(item);
 
-    public void RemoveItem(string title)
+    public bool RemoveItem(string title)
     {
         var item = _items.FirstOrDefault(i =>
             i.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
-        if (item != null)
-        {
-            _items.Remove(item);
-            Console.WriteLine($"Item '{title}' was removed.");
-        }
-        else
-            Console.WriteLine($"Item '{title}' was not found.");
+        if (item == null)
+            return false; 
+        _items.Remove(item);
+        return true;
     }
 
-    public void CompleteItem(string title)
+    public bool CompleteItem(string title)
     {
         var item = _items.FirstOrDefault(i =>
             i.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
-        if (item != null)
-        {
-            item.IsCompleted = true;
-            Console.WriteLine($"Item '{title}' was completed.");
-        }
-        else
-            Console.WriteLine($"Item '{title}' was not found.");
+        if (item == null)
+            return false;
+        item.IsCompleted = true;
+        return true;
     }
 
     public List<ToDoItem> GetAllItems() => _items.ToList();
