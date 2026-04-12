@@ -1,3 +1,4 @@
+using ToDoList.Enums;
 using ToDoList.Interfaces;
 
 namespace ToDoList.Models;
@@ -6,10 +7,12 @@ public class ToDoList
 {
     private List<ToDoItem> _items;
     private readonly IToDoStorage _storage;
+    private readonly IEventStorage _eventStorage;
 
-    public ToDoList(IToDoStorage storage)
+    public ToDoList(IToDoStorage storage, IEventStorage eventStorage)
     {
         _storage = storage;
+        _eventStorage = eventStorage;
         _items = new List<ToDoItem>();
     }
 
@@ -17,7 +20,11 @@ public class ToDoList
 
     public void LoadItems() => _items = _storage.Load();
 
-    public void AddItem(ToDoItem item) => _items.Add(item);
+    public void AddItem(ToDoItem item)
+    {
+        _items.Add(item);
+        _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemAdded, item.Title, DateTime.Now));
+    }
 
     public bool RemoveItem(string title)
     {
@@ -26,6 +33,7 @@ public class ToDoList
         if (item == null)
             return false; 
         _items.Remove(item);
+        _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemRemoved, title, DateTime.Now));
         return true;
     }
 
@@ -36,6 +44,7 @@ public class ToDoList
         if (item == null)
             return false;
         item.IsCompleted = true;
+        _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemCompleted, title, DateTime.Now));
         return true;
     }
 
@@ -53,4 +62,6 @@ public class ToDoList
 
     public List<ToDoItem> GetItemsBySpecificDate(DateTime date) =>
         _items.Where(i => i.TargetDayTime.Date == date.Date).ToList();
+
+    public List<ToDoEvent> GetAllEvents() => _eventStorage.Load();
 }

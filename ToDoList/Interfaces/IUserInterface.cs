@@ -15,4 +15,5 @@ public interface IUserInterface
     void PrintItemsByDateRange(DateTime startDate, DateTime endDate, List<ToDoItem> items); 
     void PrintItemsBySpecificDate(DateTime date, List<ToDoItem> items);
     void PrintMessage(string message);
+    void PrintEvents(List<ToDoEvent> events);
 }

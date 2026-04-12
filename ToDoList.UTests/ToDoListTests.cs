@@ -4,6 +4,7 @@ using Xunit;
 using Assert = Xunit.Assert;
 using Moq;
 using ToDoList.Interfaces;
+using ToDoList.UTests.TestResults;
 
 namespace ToDoList.UTests;
 
@@ -11,8 +12,9 @@ public class ToDoListTests
 {
     private ToDoList.Models.ToDoList CreateToDoList()
     {
+        var eventStorage = new FakeEventStorage();
         var storage = new FakeStorage();
-        return new ToDoList.Models.ToDoList(storage);
+        return new ToDoList.Models.ToDoList(storage, eventStorage);
     }
 
     [Fact]
@@ -156,10 +158,11 @@ public class ToDoListTests
     public void MoqTest_RemoveItem_WhenCalled_RemovesItemCorrectly()
     {
         var mockStorage = new Mock<IToDoStorage>();
+        var mockEventStorage = new Mock<IEventStorage>();
         mockStorage
             .Setup(s => s.Load())
             .Returns(new List<ToDoItem>());
-        var toDoList = new ToDoList.Models.ToDoList(mockStorage.Object);
+        var toDoList = new ToDoList.Models.ToDoList(mockStorage.Object, mockEventStorage.Object);
         var item = new ToDoList.Models.Task(
             targetDayTime: DateTime.Now,
             itemType: ToDoItemTypes.Task,

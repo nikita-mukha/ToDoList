@@ -4,9 +4,10 @@ using ToDoList.Models;
 
 IUserInterface ui = new ConsoleUi();
 IToDoStorage storage = new ToDoStorage();
+IEventStorage eventStorage = new JsonEventStorage();
 ItemFactory itemFactory = new ItemFactory(ui);
     
-var toDoList = new ToDoList.Models.ToDoList(storage);
+var toDoList = new ToDoList.Models.ToDoList(storage, eventStorage);
 toDoList.LoadItems();
 
 while (true)
@@ -72,6 +73,9 @@ while (true)
             }
             break;
         }
+        case MenuOptions.DisplayEventLogs:
+            ui.PrintEvents(toDoList.GetAllEvents());
+            break;
         case MenuOptions.Exit:
             return;
         default:

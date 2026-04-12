@@ -6,5 +6,6 @@ public enum MenuOptions
     RemoveItem = 2,
     CompleteItem = 3,
     Display = 4,
-    Exit = 5
+    DisplayEventLogs = 5,
+    Exit = 6
 }

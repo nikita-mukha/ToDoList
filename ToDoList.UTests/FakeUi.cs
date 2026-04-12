@@ -16,7 +16,7 @@ public class FakeUi : IUserInterface
 
     public List<string> ReadUserNames(string prompt) => 
         _answers.Dequeue().Split(',').ToList();
-
+    public void PrintEvents(List<ToDoEvent> events) { }
     public DateTime AskDate(string prompt) => DateTime.Parse(_answers.Dequeue());
 
     public int PrintAvailableOptions() => 0;

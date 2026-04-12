@@ -88,4 +88,16 @@ public class ConsoleUi : IUserInterface
         Console.WriteLine($"Results for {date:dd/MM/yyyy}:");
         PrintItems(items);
     }
+
+    public void PrintEvents(List<ToDoEvent> events)
+    {
+        if (!events.Any())
+        {
+            Console.WriteLine("No events to display.");
+            return;
+        }
+        Console.WriteLine("List of events:");
+        foreach (var e in events) 
+            Console.WriteLine($"{e.Date:dd/MM/yyyy HH:mm} - {e.EventType} - {e.Title}");
+    }
 }
