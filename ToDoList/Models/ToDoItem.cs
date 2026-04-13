@@ -8,6 +8,7 @@ namespace ToDoList.Models;
 [JsonDerivedType(typeof(Task), typeDiscriminator: "Task")]
 public abstract class ToDoItem
 {
+    public Guid Id { get; set; } = Guid.NewGuid();
     public DateTime TargetDayTime {get; set;}
     public ToDoItemTypes ItemType {get; set;}
     public string Description {get; set;}

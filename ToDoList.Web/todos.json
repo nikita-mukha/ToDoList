@@ -1,0 +1,87 @@
+[
+  {
+    "$type": "Call",
+    "InvitedPerson": [
+      "qwe"
+    ],
+    "TargetDayTime": "1990-12-20T20:50:00",
+    "ItemType": 1,
+    "Description": "ekqw",
+    "Title": "qe",
+    "IsCompleted": true
+  },
+  {
+    "$type": "Task",
+    "TargetDayTime": "2026-12-27T10:10:00",
+    "ItemType": 4,
+    "Description": "desc",
+    "Title": "task",
+    "IsCompleted": false
+  },
+  {
+    "$type": "Meeting",
+    "InvitedPerson": [
+      "Johny",
+      " Bill"
+    ],
+    "Place": "office",
+    "TargetDayTime": "2000-10-10T10:11:00",
+    "ItemType": 2,
+    "Description": "desc",
+    "Title": "test",
+    "IsCompleted": false
+  },
+  {
+    "$type": "Task",
+    "TargetDayTime": "1990-12-12T11:11:00",
+    "ItemType": 4,
+    "Description": "qwe",
+    "Title": "qwe",
+    "IsCompleted": true
+  },
+  {
+    "$type": "Task",
+    "TargetDayTime": "1990-12-12T11:11:00",
+    "ItemType": 4,
+    "Description": "qwe",
+    "Title": "qwe",
+    "IsCompleted": false
+  },
+  {
+    "$type": "Task",
+    "TargetDayTime": "1990-11-11T11:11:00",
+    "ItemType": 4,
+    "Description": "ewq",
+    "Title": "qwe",
+    "IsCompleted": false
+  },
+  {
+    "$type": "Task",
+    "TargetDayTime": "1990-11-11T11:11:00",
+    "ItemType": 4,
+    "Description": "ewq",
+    "Title": "qwe",
+    "IsCompleted": false
+  },
+  {
+    "$type": "Meeting",
+    "InvitedPerson": [
+      "John",
+      "Jane"
+    ],
+    "Place": "office",
+    "TargetDayTime": "1990-11-11T11:11:00",
+    "ItemType": 2,
+    "Description": "dsaf",
+    "Title": "qwe",
+    "IsCompleted": false
+  },
+  {
+    "$type": "Task",
+    "TargetDayTime": "1998-12-11T12:54:00",
+    "ItemType": 4,
+    "Description": "eqmk",
+    "Title": "flak",
+    "IsCompleted": false
+  }
+]

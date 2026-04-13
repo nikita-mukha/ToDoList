@@ -1,4 +1,6 @@
-﻿using ToDoList.Enums;
+﻿// Console app deprecated — use ToDoList.Web instead
+
+/*using ToDoList.Enums;
 using ToDoList.Interfaces;
 using ToDoList.Models;
 
@@ -7,7 +9,7 @@ IToDoStorage storage = new ToDoStorage();
 IEventStorage eventStorage = new JsonEventStorage();
 ItemFactory itemFactory = new ItemFactory(ui);
     
-var toDoList = new ToDoList.Models.ToDoList(storage, eventStorage);
+var toDoList = new ToDoList.Models.ToDoManager(storage, eventStorage);
 toDoList.LoadItems();
 
 while (true)
@@ -83,3 +85,4 @@ while (true)
             break;
     }
 }
+*/

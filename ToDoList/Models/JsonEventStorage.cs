@@ -1,9 +1,11 @@
-using System.Text.Json;
+// not used anymore keeping for history
+
+/* using System.Text.Json;
 using ToDoList.Interfaces;
 
 namespace ToDoList.Models;
 
-public class JsonEventStorage : IEventStorage
+public class JsonEventStorage
 {
     private readonly string _filePath;
     public JsonEventStorage(string filePath = "events.json")
@@ -48,3 +50,4 @@ public class JsonEventStorage : IEventStorage
         }
     }
 }
+*/

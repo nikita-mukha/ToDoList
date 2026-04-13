@@ -1,0 +1,30 @@
+@model RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "_Layout";
+}
+<h1>Register</h1>
+<form asp-action="Register" method="post">
+    <div asp-validation-summary="ModelOnly" style="color:red"></div>
+
+    <div>
+        <label asp-for="UserName">UserName</label>
+        <input asp-for="UserName"/>
+        <span asp-validation-for="UserName" style="color:red"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password">Password</label>
+        <input asp-for="Password" type="password"/>
+        <span asp-validation-for="Password" style="color:red"></span>
+    </div>
+
+    <div>
+        <label asp-for="ConfirmPassword">Confirm password</label>
+        <input asp-for="ConfirmPassword" type="password"/>
+        <span asp-validation-for="ConfirmPassword" style="color:red"></span>
+    </div>
+    <button type="submit">Submit</button>
+    <a asp-action="Login">Already have an account? Login</a>
+</form>

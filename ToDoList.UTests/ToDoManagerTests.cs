@@ -8,13 +8,13 @@ using ToDoList.UTests.TestResults;
 
 namespace ToDoList.UTests;
 
-public class ToDoListTests
+public class ToDoManagerTests
 {
-    private ToDoList.Models.ToDoList CreateToDoList()
+    private ToDoList.Models.ToDoManager CreateToDoList()
     {
         var eventStorage = new FakeEventStorage();
         var storage = new FakeStorage();
-        return new ToDoList.Models.ToDoList(storage, eventStorage);
+        return new ToDoList.Models.ToDoManager(storage, eventStorage);
     }
 
     [Fact]
@@ -162,7 +162,7 @@ public class ToDoListTests
         mockStorage
             .Setup(s => s.Load())
             .Returns(new List<ToDoItem>());
-        var toDoList = new ToDoList.Models.ToDoList(mockStorage.Object, mockEventStorage.Object);
+        var toDoList = new ToDoList.Models.ToDoManager(mockStorage.Object, mockEventStorage.Object);
         var item = new ToDoList.Models.Task(
             targetDayTime: DateTime.Now,
             itemType: ToDoItemTypes.Task,

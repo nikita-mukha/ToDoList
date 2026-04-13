@@ -1,9 +1,11 @@
+// not used anymore keeping for history
+/*
 using System.Text.Json;
 using ToDoList.Interfaces;
 
 namespace ToDoList.Models;
 
-public class ToDoStorage : IToDoStorage
+public class ToDoStorage
 {
     private readonly string _filePath;
     public ToDoStorage(string filePath = "todos.json")
@@ -48,3 +50,4 @@ public class ToDoStorage : IToDoStorage
         }
     }
 }
+*/
