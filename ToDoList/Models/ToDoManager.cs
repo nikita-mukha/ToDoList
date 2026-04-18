@@ -25,8 +25,12 @@ public class ToDoManager : IToDoManager
         var item = _storage.GetById(id, userId);
         if (item == null)
             return false;
-        _storage.Remove(id, userId);
-        _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemRemoved,item.UserId, item.Title, DateTime.Now));
+
+        var removed = _storage.Remove(id, userId);
+        if (!removed)
+            return false;
+
+        _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemRemoved, item.UserId, item.Title, DateTime.Now));
         return true;
     }
 
@@ -35,13 +39,19 @@ public class ToDoManager : IToDoManager
         var item = _storage.GetById(id, userId);
         if (item == null)
             return false;
-        _storage.Complete(id, userId);
+
+        var completed = _storage.Complete(id, userId);
+        if (!completed)
+            return false;
+
         _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemCompleted, item.UserId, item.Title, DateTime.Now));
         return true;
     }
     
     public List<ToDoItem> GetAllItems(string userId) => _storage.GetAll(userId);
-
+    
+    public ToDoItem? GetItemById(Guid id, string userId) => _storage.GetById(id, userId);
+    
     public List<ToDoItem> GetActiveItems(string userId) => _storage.GetActive(userId);
 
     public List<ToDoItem> GetItemsByDateTimeRange(DateTime startDate, DateTime endDate, string userId) => 
@@ -52,4 +62,18 @@ public class ToDoManager : IToDoManager
 
     public List<ToDoEvent> GetAllEvents(string userId) =>
         _eventStorage.Load().Where(e => e.UserId == userId).ToList();
+
+    public bool UpdateItem(Guid id, string userId, string title, string description, DateTime targetDayTime)
+    {
+        var item = _storage.GetById(id, userId);
+        if (item == null)
+            return false;
+
+        var updated = _storage.Update(id, userId, title, description, targetDayTime);
+        if (!updated)
+            return false;
+
+        _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemEdited, userId, title, DateTime.Now));
+        return true;
+    }
 }

@@ -3,3 +3,10 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+.idea/
+*.user
+*.suo
+
+*.db
+*.db-shm
+*.db-wal

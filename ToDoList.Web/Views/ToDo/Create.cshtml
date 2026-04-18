@@ -6,66 +6,70 @@
     Layout = "_Layout";
 }
 
-<h1>Create New Item</h1>
-<form asp-action="Create" method="post">
-    
-    <div>
-        <label asp-for="Title">Title</label>
-        <input asp-for="Title" />
-        <span asp-validation-for="Title" style="color:red"></span>
+<h1 class="mb-4">Create New Item</h1>
+
+<form asp-action="Create" method="post" class="card shadow-sm p-4">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label">Title</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="Description">Description (optional)</label>
-        <input asp-for="Description" />
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description (optional)</label>
+        <input asp-for="Description" class="form-control" />
     </div>
 
-    <div>
-        <label asp-for="TargetDayTime">Date and Time</label>
-        <input asp-for="TargetDayTime" type="datetime-local" />
-        <span asp-validation-for="TargetDayTime" style="color:red"></span>
+    <div class="mb-3">
+        <label asp-for="TargetDayTime" class="form-label">Date and Time</label>
+        <input asp-for="TargetDayTime" type="datetime-local" class="form-control" />
+        <span asp-validation-for="TargetDayTime" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="ItemType">Type</label>
-        <select asp-for="ItemType" id="itemType" onchange="showFields()">
+    <div class="mb-3">
+        <label asp-for="ItemType" class="form-label">Type</label>
+        <select asp-for="ItemType" id="itemType" onchange="showFields()" class="form-select">
             @foreach (var type in Enum.GetValues<ToDoItemTypes>())
             {
                 <option value="@((int)type)">@type</option>
             }
         </select>
     </div>
-    
-    <div id="invitedPersonsField" style="display:none">
-        <label asp-for="InvitedPersons">Invited Persons (comma separated)</label>
-        <input asp-for="InvitedPersons"/>
-        <span asp-validation-for="InvitedPersons" style="color:red"></span>
+
+    <div id="invitedPersonsField" class="mb-3" style="display:none">
+        <label asp-for="InvitedPersons" class="form-label">Invited Persons (comma separated)</label>
+        <input asp-for="InvitedPersons" class="form-control" />
+        <span asp-validation-for="InvitedPersons" class="text-danger"></span>
     </div>
 
-    <div id="placeField" style="display:none">
-        <label asp-for="Place">Place</label>
-        <input asp-for="Place" />
-        <span asp-validation-for="Place" style="color:red"></span>
+    <div id="placeField" class="mb-3" style="display:none">
+        <label asp-for="Place" class="form-label">Place</label>
+        <input asp-for="Place" class="form-control" />
+        <span asp-validation-for="Place" class="text-danger"></span>
     </div>
 
-    <div id="personNameField" style="display:none">
-        <label asp-for="PersonName">Person Name</label>
-        <input asp-for="PersonName" />
-        <span asp-validation-for="PersonName" style="color:red"></span>
+    <div id="personNameField" class="mb-3" style="display:none">
+        <label asp-for="PersonName" class="form-label">Person Name</label>
+        <input asp-for="PersonName" class="form-control" />
+        <span asp-validation-for="PersonName" class="text-danger"></span>
     </div>
 
-    <button type="submit">Create</button>
-    <a asp-action="Index">Cancel</a>
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
 </form>
 
 <script>
     function showFields() {
         var type = document.getElementById('itemType').value;
-        
+
         document.getElementById('invitedPersonsField').style.display = 'none';
         document.getElementById('placeField').style.display = 'none';
         document.getElementById('personNameField').style.display = 'none';
-        
+
         if (type == 1) { // Call
             document.getElementById('invitedPersonsField').style.display = 'block';
         }
@@ -77,10 +81,10 @@
             document.getElementById('personNameField').style.display = 'block';
         }
     }
-    
+
     showFields();
-    </script>
-    
+</script>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

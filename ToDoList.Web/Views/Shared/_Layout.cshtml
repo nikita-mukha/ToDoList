@@ -23,6 +23,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-controller="ToDo" asp-action="Index">Todo List</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="ToDo" asp-action="Events">Event Log</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     @if (User.Identity.IsAuthenticated)

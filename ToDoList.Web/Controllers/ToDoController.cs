@@ -23,6 +23,12 @@ public class ToDoController : Controller
      var items = _toDoManager.GetAllItems(userId!);
      return View(items);
  }
+ public IActionResult Events()
+ {
+     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+     var events = _toDoManager.GetAllEvents(userId!);
+     return View(events);
+ }
  public IActionResult Create()
  {
      return View();
@@ -65,4 +71,43 @@ public class ToDoController : Controller
      _toDoManager.CompleteItem(id, userId!);
      return RedirectToAction("Index");
  }
-}
+ 
+ public IActionResult Edit(Guid id)
+ {
+     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+     var item = _toDoManager.GetItemById(id, userId!);
+     
+     if (item == null) return NotFound();
+
+     var model = new EditToDoItemViewModel()
+     {
+         Id = item.Id,
+         Title = item.Title,
+         Description = item.Description,
+         TargetDayTime = item.TargetDayTime
+     };
+     return View(model);
+ }
+
+ [HttpPost]
+ public IActionResult Edit(EditToDoItemViewModel model)
+     { 
+         if (!ModelState.IsValid)
+             return View(model);
+
+         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+         var updated = _toDoManager.UpdateItem(
+             model.Id,
+             userId!,
+             model.Title,
+             model.Description,
+             model.TargetDayTime);
+
+         if (!updated)
+             return NotFound();
+
+         return RedirectToAction("Index");
+     }
+ }
+ 

@@ -12,4 +12,5 @@ public interface IToDoStorage
     List<ToDoItem> GetActive(string userId);
     List<ToDoItem> GetByDateRange(DateTime start, DateTime end, string userId);
     List<ToDoItem> GetByDate(DateTime date, string userId);
+    bool Update(Guid id, string userId, string title, string description, DateTime targetDayTime);
 }

@@ -9,7 +9,10 @@ using ToDoList.UTests.TestResults;
 namespace ToDoList.UTests;
 
 public class ToDoManagerTests
+
 {
+    private const string TestUserId = "user-1";
+    private const string TestUserId2 = "user-2";
     private ToDoList.Models.ToDoManager CreateToDoList()
     {
         var eventStorage = new FakeEventStorage();
@@ -26,9 +29,11 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test task",
             isCompleted: false);
+        item.UserId = TestUserId;
+        
         toDoList.AddItem(item);
         
-        var items = toDoList.GetAllItems();
+        var items = toDoList.GetAllItems(TestUserId);
         
         Assert.Single(items);
         Assert.Equal("Test task", items[0].Title);
@@ -44,12 +49,13 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test task",
             isCompleted: false);
+        item.UserId = TestUserId;
         toDoList.AddItem(item);
         
-        var result = toDoList.RemoveItem("Test task");
+        var result = toDoList.RemoveItem(item.Id, TestUserId);
         
         Assert.True(result);
-        Assert.Empty(toDoList.GetAllItems());
+        Assert.Empty(toDoList.GetAllItems(TestUserId));
     }
 
     [Fact]
@@ -61,12 +67,13 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test task",
             isCompleted: false);
+        item.UserId = TestUserId;
         toDoList.AddItem(item);
         
-        var result = toDoList.RemoveItem("Test");
+        var result = toDoList.RemoveItem(Guid.NewGuid(), TestUserId);
         
         Assert.False(result);
-        Assert.Single(toDoList.GetAllItems());
+        Assert.Single(toDoList.GetAllItems(TestUserId));
     }
 
     [Fact]
@@ -78,10 +85,11 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test task",
             isCompleted: false);
+        item.UserId = TestUserId;
         toDoList.AddItem(item);
         
-        var result = toDoList.CompleteItem("Test task");
-        var items = toDoList.GetAllItems();
+        var result = toDoList.CompleteItem(item.Id, TestUserId);
+        var items = toDoList.GetAllItems(TestUserId);
         
         Assert.True(result);
         Assert.True(items[0].IsCompleted);
@@ -96,10 +104,11 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test task",
             isCompleted: false);
+        item.UserId = TestUserId;
         toDoList.AddItem(item);
         
-        var result = toDoList.CompleteItem("Test");
-        var items = toDoList.GetAllItems();
+        var result = toDoList.CompleteItem(Guid.NewGuid(), TestUserId);
+        var items = toDoList.GetAllItems(TestUserId);
         
         Assert.False(result);
         Assert.False(items[0].IsCompleted);
@@ -114,6 +123,7 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test task",
             isCompleted: false);
+        item.UserId = TestUserId;
         toDoList.AddItem(item);
         
         var item2 = new ToDoList.Models.Task(
@@ -121,11 +131,12 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test",
             isCompleted: false);
+        item2.UserId = TestUserId;
         toDoList.AddItem(item2);
         
-        toDoList.CompleteItem("Test");
+        toDoList.CompleteItem(item2.Id, TestUserId);
         
-        Assert.Single(toDoList.GetActiveItems());
+        Assert.Single(toDoList.GetActiveItems(TestUserId));
     }
 
     [Fact]
@@ -137,6 +148,7 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test task",
             isCompleted: false);
+        item.UserId = TestUserId;
         toDoList.AddItem(item);
         
         var item2 = new ToDoList.Models.Task(
@@ -144,43 +156,22 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test",
             isCompleted: false);
-            toDoList.AddItem(item2);
+        item2.UserId = TestUserId;
+        toDoList.AddItem(item2);
             
-            var items = toDoList.GetItemsByDateTimeRange(
-                new DateTime(2021, 1, 1),
-                new DateTime(2029, 1, 1)); 
-            
-            Assert.Single(items); 
-            Assert.Equal("Test task", items[0].Title);
-    }
-    
-    [Fact]
-    public void MoqTest_RemoveItem_WhenCalled_RemovesItemCorrectly()
-    {
-        var mockStorage = new Mock<IToDoStorage>();
-        var mockEventStorage = new Mock<IEventStorage>();
-        mockStorage
-            .Setup(s => s.Load())
-            .Returns(new List<ToDoItem>());
-        var toDoList = new ToDoList.Models.ToDoManager(mockStorage.Object, mockEventStorage.Object);
-        var item = new ToDoList.Models.Task(
-            targetDayTime: DateTime.Now,
-            itemType: ToDoItemTypes.Task,
-            title: "Test task",
-            isCompleted: false);
-        toDoList.AddItem(item);
+        var items = toDoList.GetItemsByDateTimeRange(
+            new DateTime(2021, 1, 1),
+            new DateTime(2029, 1, 1),
+            TestUserId); 
         
-        var result = toDoList.RemoveItem("Test task");
-        
-        Assert.True(result);
-        Assert.Empty(toDoList.GetAllItems());
+        Assert.Single(items); 
+        Assert.Equal("Test task", items[0].Title);
     }
     
     [Theory]
-    [InlineData("test task")]
-    [InlineData("TEST TASK")]
-    [InlineData("Test Task")]
-    public void RemoveItem_IsCaseInsensitive_ReturnsTrue(string titleInput)
+    [InlineData(true, true, 0)]
+    [InlineData(false, false, 1)]
+    public void RemoveItem_ReturnsExpectedResult(bool useCorrectUserId, bool expectedCompletion, int expectedCount)
     {
         var toDoList = CreateToDoList();
         var item = new ToDoList.Models.Task(
@@ -188,31 +179,13 @@ public class ToDoManagerTests
             itemType: ToDoItemTypes.Task,
             title: "Test task",
             isCompleted: false);
+        item.UserId = TestUserId;
         toDoList.AddItem(item);
-        
-        var result = toDoList.RemoveItem(titleInput); 
-        
-        Assert.True(result);
-        Assert.Empty(toDoList.GetAllItems());
-    }
-    
-    [Theory]
-    [InlineData("Test task", true, 0)]
-    [InlineData("Not existing task", false, 1)]
-    public void RemoveItem_ReturnsExpectedResult(string titleInput, bool expectedCompletion, int expectedCount)
-    {
-        var toDoList = CreateToDoList();
-        var item = new ToDoList.Models.Task(
-            targetDayTime: DateTime.Now,
-            itemType: ToDoItemTypes.Task,
-            title: "Test task",
-            isCompleted: false);
-        toDoList.AddItem(item);
-        
-        var result = toDoList.RemoveItem(titleInput);
-        
+
+        var userId = useCorrectUserId ? TestUserId : TestUserId2;
+        var result = toDoList.RemoveItem(item.Id, userId);
+
         Assert.Equal(expectedCompletion, result);
-        Assert.Equal(expectedCount, toDoList.GetAllItems().Count);
-        
+        Assert.Equal(expectedCount, toDoList.GetAllItems(TestUserId).Count);
     }
 }

@@ -54,4 +54,16 @@ public class EfToDoStorage : IToDoStorage
 
     public List<ToDoItem> GetByDate(DateTime date, string userId) =>
         _context.Items.Where(i => i.UserId == userId && i.TargetDayTime == date).ToList();
+    
+    public bool Update(Guid id, string userId, string title, string description, DateTime targetDayTime)
+    {
+        var item = _context.Items.FirstOrDefault(i => i.Id == id && i.UserId == userId);
+        if (item == null)
+            return false;
+        item.Title = title;
+        item.Description = description;
+        item.TargetDayTime = targetDayTime;
+        _context.SaveChanges();
+        return true;
+    }
 }
