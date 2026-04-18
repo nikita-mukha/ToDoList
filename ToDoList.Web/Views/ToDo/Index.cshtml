@@ -2,24 +2,60 @@
 
 @{
     var showCompleted = Context.Request.Query["showCompleted"] == "true";
-    var visibleItems = showCompleted
-        ? Model
-        : Model.Where(i => !i.IsCompleted).ToList();
+    var startDate = Context.Request.Query["startDate"].ToString();
+    var endDate = Context.Request.Query["endDate"].ToString();
+
+    List<ToDoList.Models.ToDoItem> visibleItems;
+
+    if (showCompleted)
+    {
+        visibleItems = Model;
+    }
+    else
+    {
+        visibleItems = Model.Where(item => !item.IsCompleted).ToList();
+    }
 }
 
 <h1 class="mb-4">@User.Identity!.Name's List</h1>
 
+<form asp-action="Index" method="get" class="d-flex gap-2 align-items-end mb-3">
+    <input type="hidden" name="showCompleted" value="@showCompleted.ToString().ToLower()" />
 
+    <div>
+        <label for="startDate" class="form-label">From</label>
+        <input type="date"
+               id="startDate"
+               name="startDate"
+               class="form-control"
+               value="@startDate"
+               onchange="syncDateRange(); this.form.submit()" />
+    </div>
+
+    <div>
+        <label for="endDate" class="form-label">To</label>
+        <input type="date"
+               id="endDate"
+               name="endDate"
+               class="form-control"
+               value="@endDate"
+               onchange="syncDateRange(); this.form.submit()" />
+    </div>
+
+    <a asp-action="Index"
+       asp-route-showCompleted="@showCompleted"
+       class="btn btn-outline-secondary">Clear</a>
+</form>
 <div class="d-flex gap-2 mb-3">
 <a asp-action="Create" class="btn btn-primary">+ Add New Item</a>
 @if (showCompleted)
 {
-    <a asp-action="Index" class="btn btn-outline-secondary">Hide Completed</a>
+    <a asp-action="Index" asp-route-startDate="@startDate" asp-route-endDate="@endDate" class="btn btn-outline-secondary">Hide Completed</a>
 }
 
 else
 {
-    <a asp-action="Index" asp-route-showCompleted="true" class="btn btn-outline-secondary">Show Completed</a>
+    <a asp-action="Index" asp-route-showCompleted="true" asp-route-startDate="@startDate" asp-route-endDate="@endDate" class="btn btn-outline-secondary">Show Completed</a>
 }
 </div>
 
@@ -92,3 +128,18 @@ else
         }
     </div>
 }
+
+<script>
+function syncDateRange() {
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+
+    if (!startDate || !endDate || !startDate.value || !endDate.value) {
+        return;
+    }
+
+    if (endDate.value < startDate.value) {
+        endDate.value = startDate.value;
+    }
+}
+</script>

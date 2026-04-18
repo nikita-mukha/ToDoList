@@ -48,12 +48,13 @@ public class EfToDoStorage : IToDoStorage
         _context.Items.Where(i => i.UserId == userId && i.IsCompleted == false).ToList();
 
     public List<ToDoItem> GetByDateRange(DateTime start, DateTime end, string userId) => 
-        _context.Items.Where
-            (i => i.UserId == userId && i.TargetDayTime >= start 
-                  && i.TargetDayTime <= end).ToList();
+        _context.Items.Where(i =>
+            i.UserId == userId &&
+            i.TargetDayTime.Date >= start.Date &&
+            i.TargetDayTime.Date <= end.Date).ToList();
 
     public List<ToDoItem> GetByDate(DateTime date, string userId) =>
-        _context.Items.Where(i => i.UserId == userId && i.TargetDayTime == date).ToList();
+        _context.Items.Where(i => i.UserId == userId && i.TargetDayTime.Date == date.Date).ToList();
     
     public bool Update(Guid id, string userId, string title, string description, DateTime targetDayTime)
     {

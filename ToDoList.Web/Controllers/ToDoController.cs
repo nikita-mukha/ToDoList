@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Enums;
 using ToDoList.Interfaces;
+using ToDoList.Models;
 using ToDoList.Web.Models;
 
 namespace ToDoList.Web.Controllers;
@@ -17,10 +18,28 @@ public class ToDoController : Controller
      _toDoManager = toDoManager;
  }
 
- public IActionResult Index()
+ public IActionResult Index(DateTime? startDate, DateTime? endDate)
  {
-     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-     var items = _toDoManager.GetAllItems(userId!);
+     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+     if (startDate.HasValue && endDate.HasValue && startDate.Value.Date > endDate.Value.Date)
+     {
+         endDate = startDate;
+     }
+
+     List<ToDoItem> items;
+
+     if (startDate.HasValue)
+     {
+         items = endDate.HasValue
+             ? _toDoManager.GetItemsByDateTimeRange(startDate.Value, endDate.Value, userId)
+             : _toDoManager.GetItemsBySpecificDate(startDate.Value, userId);
+     }
+     else
+     {
+         items = _toDoManager.GetAllItems(userId);
+     }
+
      return View(items);
  }
  public IActionResult Events()

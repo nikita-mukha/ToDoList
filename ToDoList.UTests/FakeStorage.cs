@@ -42,4 +42,8 @@ public class FakeStorage : IToDoStorage
     public List<ToDoItem> GetByDate(DateTime date, string userId) => 
         _items.Where(i => i.UserId == userId && i.TargetDayTime.Date == date.Date).ToList();
 
+    public bool Update(Guid id, string userId, string title, string description, DateTime targetDayTime)
+    {
+        throw new NotImplementedException();
+    }
 }

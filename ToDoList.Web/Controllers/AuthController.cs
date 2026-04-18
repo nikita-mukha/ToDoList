@@ -41,13 +41,20 @@ public class AuthController : Controller
         return View(model);
     }
     
-    public IActionResult Login() => View();
+    public IActionResult Login(string? returnUrl = null)
+    {
+        ViewData["ReturnUrl"] = returnUrl;
+        return View();
+    }
     
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel model)
+    public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
     {
         if (!ModelState.IsValid)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
             return View(model);
+        }
 
         var result = await _signInManager.PasswordSignInAsync(
             model.UserName, model.Password,
@@ -55,9 +62,15 @@ public class AuthController : Controller
             lockoutOnFailure: false);
 
         if (result.Succeeded)
+        {
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+
             return RedirectToAction("Index", "ToDo");
+        }
 
         ModelState.AddModelError(string.Empty, "Invalid username or password");
+        ViewData["ReturnUrl"] = returnUrl;
         return View(model);
     }
     
