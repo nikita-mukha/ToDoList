@@ -5,11 +5,11 @@ namespace ToDoList.Interfaces;
 public interface IToDoStorage
 {
     void Add(ToDoItem item);
-    ToDoItem? GetById(Guid id);
-    bool Remove(Guid id);
-    bool Complete(Guid id);
-    List<ToDoItem> GetAll();
-    List<ToDoItem> GetActive();
-    List<ToDoItem> GetByDateRange(DateTime start, DateTime end);
-    List<ToDoItem> GetByDate(DateTime date);
+    ToDoItem? GetById(Guid id, string userId);
+    bool Remove(Guid id, string userId);
+    bool Complete(Guid id, string userId);
+    List<ToDoItem> GetAll(string userId);
+    List<ToDoItem> GetActive(string userId);
+    List<ToDoItem> GetByDateRange(DateTime start, DateTime end, string userId);
+    List<ToDoItem> GetByDate(DateTime date, string userId);
 }

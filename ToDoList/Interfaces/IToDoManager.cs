@@ -5,11 +5,11 @@ namespace ToDoList.Interfaces;
 public interface IToDoManager
 {
     void AddItem(ToDoItem item);
-    bool RemoveItem(Guid id);
-    bool CompleteItem(Guid id);
-    List<ToDoItem> GetAllItems();
-    List<ToDoItem> GetActiveItems();
-    List<ToDoItem> GetItemsByDateTimeRange(DateTime startDate, DateTime endDate);
-    List<ToDoItem> GetItemsBySpecificDate(DateTime date);
-    List<ToDoEvent> GetAllEvents();
+    bool RemoveItem(Guid id, string userId);
+    bool CompleteItem(Guid id, string userId);
+    List<ToDoItem> GetAllItems(string userId);
+    List<ToDoItem> GetActiveItems(string userId);
+    List<ToDoItem> GetItemsByDateTimeRange(DateTime startDate, DateTime endDate, string userId);
+    List<ToDoItem> GetItemsBySpecificDate(DateTime date, string userId);
+    List<ToDoEvent> GetAllEvents(string userId);
 }

@@ -9,6 +9,7 @@ namespace ToDoList.Models;
 public abstract class ToDoItem
 {
     public Guid Id { get; set; } = Guid.NewGuid();
+    public string UserId { get; set; } = string.Empty;
     public DateTime TargetDayTime {get; set;}
     public ToDoItemTypes ItemType {get; set;}
     public string Description {get; set;}

@@ -1,8 +1,8 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Enums;
 using ToDoList.Interfaces;
-using ToDoList.Models;
 using ToDoList.Web.Models;
 
 namespace ToDoList.Web.Controllers;
@@ -19,7 +19,8 @@ public class ToDoController : Controller
 
  public IActionResult Index()
  {
-     var items = _toDoManager.GetAllItems();
+     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+     var items = _toDoManager.GetAllItems(userId!);
      return View(items);
  }
  public IActionResult Create()
@@ -44,20 +45,24 @@ public class ToDoController : Controller
      if (!ModelState.IsValid)
          return View(model);
      var item = ToDoItemMapper.FromViewModel(model);
+     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+     item.UserId = userId!;
      _toDoManager.AddItem(item);
      return RedirectToAction("Index");
  }
  [HttpPost]
  public IActionResult Delete(Guid id)
  {
-     _toDoManager.RemoveItem(id);
+     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+     _toDoManager.RemoveItem(id, userId!);
      return RedirectToAction("Index");
  }
 
  [HttpPost]
  public IActionResult Complete(Guid id)
  {
-     _toDoManager.CompleteItem(id);
+     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+     _toDoManager.CompleteItem(id, userId!);
      return RedirectToAction("Index");
  }
 }

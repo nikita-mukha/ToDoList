@@ -20,35 +20,35 @@ public class ToDoManager : IToDoManager
         _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemAdded, item.Title, DateTime.Now));
     }
 
-    public bool RemoveItem(Guid id)
+    public bool RemoveItem(Guid id, string userId)
     {
-        var item = _storage.GetById(id);
+        var item = _storage.GetById(id, userId);
         if (item == null)
             return false;
-        _storage.Remove(id);
+        _storage.Remove(id, userId);
         _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemRemoved, item.Title, DateTime.Now));
         return true;
     }
 
-    public bool CompleteItem(Guid id)
+    public bool CompleteItem(Guid id, string userId)
     {
-        var item = _storage.GetById(id);
+        var item = _storage.GetById(id, userId);
         if (item == null)
             return false;
-        _storage.Complete(id);
+        _storage.Complete(id, userId);
         _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemCompleted, item.Title, DateTime.Now));
         return true;
     }
     
-    public List<ToDoItem> GetAllItems() => _storage.GetAll();
+    public List<ToDoItem> GetAllItems(string userId) => _storage.GetAll(userId);
 
-    public List<ToDoItem> GetActiveItems() => _storage.GetActive();
+    public List<ToDoItem> GetActiveItems(string userId) => _storage.GetActive(userId);
 
-    public List<ToDoItem> GetItemsByDateTimeRange(DateTime startDate, DateTime endDate) => 
-        _storage.GetByDateRange(startDate, endDate);
+    public List<ToDoItem> GetItemsByDateTimeRange(DateTime startDate, DateTime endDate, string userId) => 
+        _storage.GetByDateRange(startDate, endDate, userId);
 
-    public List<ToDoItem> GetItemsBySpecificDate(DateTime date) => 
-        _storage.GetByDate(date);
+    public List<ToDoItem> GetItemsBySpecificDate(DateTime date, string userId) => 
+        _storage.GetByDate(date, userId);
 
-    public List<ToDoEvent> GetAllEvents() => _eventStorage.Load();
+    public List<ToDoEvent> GetAllEvents(string userId) => _eventStorage.Load();
 }
