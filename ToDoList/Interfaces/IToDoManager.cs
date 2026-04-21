@@ -10,6 +10,7 @@ public interface IToDoManager
     ToDoItem? GetItemById(Guid id, string userId);
     List<ToDoItem> GetAllItems(string userId);
     List<ToDoItem> GetActiveItems(string userId);
+    List<ToDoItem> GetItemByTitle(string title, string userId);
     List<ToDoItem> GetItemsByDateTimeRange(DateTime startDate, DateTime endDate, string userId);
     List<ToDoItem> GetItemsBySpecificDate(DateTime date, string userId);
     List<ToDoEvent> GetAllEvents(string userId);

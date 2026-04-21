@@ -4,6 +4,7 @@
     var showCompleted = Context.Request.Query["showCompleted"] == "true";
     var startDate = Context.Request.Query["startDate"].ToString();
     var endDate = Context.Request.Query["endDate"].ToString();
+    var title = Context.Request.Query["title"].ToString();
 
     List<ToDoList.Models.ToDoItem> visibleItems;
 
@@ -21,6 +22,7 @@
 
 <form asp-action="Index" method="get" class="d-flex gap-2 align-items-end mb-3">
     <input type="hidden" name="showCompleted" value="@showCompleted.ToString().ToLower()" />
+    <input type="hidden" name="title" value="@title" />
 
     <div>
         <label for="startDate" class="form-label">From</label>
@@ -46,16 +48,39 @@
        asp-route-showCompleted="@showCompleted"
        class="btn btn-outline-secondary">Clear</a>
 </form>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <input type="hidden" name="showCompleted" value="@showCompleted.ToString().ToLower()" />
+    <input type="hidden" name="startDate" value="@startDate" />
+    <input type="hidden" name="endDate" value="@endDate" />
+
+    <div>
+        <label for="title" class="form-label">Search by title</label>
+        <input type="text"
+               id="title"
+               name="title"
+               class="form-control"
+               value="@title"
+               placeholder="Type a title..." />
+        <button type="submit" class="btn btn-outline-primary mt-2">Search</button>
+        <a asp-action="Index"
+           asp-route-showCompleted="@showCompleted"
+           asp-route-startDate="@startDate"
+           asp-route-endDate="@endDate"
+           class="btn btn-outline-secondary mt-2 ms-2">Clear Search</a>
+    </div>
+</form>
+
 <div class="d-flex gap-2 mb-3">
 <a asp-action="Create" class="btn btn-primary">+ Add New Item</a>
 @if (showCompleted)
 {
-    <a asp-action="Index" asp-route-startDate="@startDate" asp-route-endDate="@endDate" class="btn btn-outline-secondary">Hide Completed</a>
+    <a asp-action="Index" asp-route-startDate="@startDate" asp-route-endDate="@endDate" asp-route-title="@title" class="btn btn-outline-secondary">Hide Completed</a>
 }
 
 else
 {
-    <a asp-action="Index" asp-route-showCompleted="true" asp-route-startDate="@startDate" asp-route-endDate="@endDate" class="btn btn-outline-secondary">Show Completed</a>
+    <a asp-action="Index" asp-route-showCompleted="true" asp-route-startDate="@startDate" asp-route-endDate="@endDate" asp-route-title="@title" class="btn btn-outline-secondary">Show Completed</a>
 }
 </div>
 

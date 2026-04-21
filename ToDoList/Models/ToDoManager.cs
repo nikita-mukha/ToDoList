@@ -53,6 +53,7 @@ public class ToDoManager : IToDoManager
     public ToDoItem? GetItemById(Guid id, string userId) => _storage.GetById(id, userId);
     
     public List<ToDoItem> GetActiveItems(string userId) => _storage.GetActive(userId);
+    public List<ToDoItem> GetItemByTitle(string title, string userId) => _storage.GetByTitle(title, userId);
 
     public List<ToDoItem> GetItemsByDateTimeRange(DateTime startDate, DateTime endDate, string userId) => 
         _storage.GetByDateRange(startDate, endDate, userId);

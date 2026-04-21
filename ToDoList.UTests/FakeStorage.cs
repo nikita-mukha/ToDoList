@@ -33,6 +33,10 @@ public class FakeStorage : IToDoStorage
     public List<ToDoItem> GetAll(string userId) => _items.Where(i => i.UserId == userId).ToList();
 
     public List<ToDoItem> GetActive(string userId) => _items.Where(i => i.UserId == userId && !i.IsCompleted).ToList();
+    public List<ToDoItem> GetByTitle(string title, string userId)
+    {
+        throw new NotImplementedException();
+    }
 
     public List<ToDoItem> GetByDateRange(DateTime start, DateTime end, string userId) =>
         _items.Where(i => i.UserId == userId

@@ -45,6 +45,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseStatusCodePagesWithReExecute("/Home/StatusCode", "?code={0}");
 app.UseAuthentication();
 app.UseAuthorization();
 

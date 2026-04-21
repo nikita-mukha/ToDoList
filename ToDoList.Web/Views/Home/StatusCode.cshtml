@@ -1,0 +1,27 @@
+@model int
+
+@{
+    ViewBag.Title = "Status Code Page";
+    Layout = "_Layout";
+}
+
+@{
+    ViewData["Title"] = Model == 404 ? "Page not found" : "Something went wrong";
+}
+
+@if (Model == 404)
+{
+    <h1 class="text-warning">Page not found</h1>
+    <p>The page you’re looking for doesn’t exist or may have been moved.</p>
+    <p>
+        <a asp-controller="ToDo" asp-action="Index" class="btn btn-sm btn-warning">Back to Todo List</a>
+    </p>
+}
+else
+{
+    <h1 class="text-danger">Something went wrong</h1>
+    <p>We couldn’t process your request.</p>
+    <p>
+        <a asp-controller="ToDo" asp-action="Index" class="btn btn-sm btn-warning">Back to Todo List</a>
+    </p>
+}

@@ -67,4 +67,9 @@ public class EfToDoStorage : IToDoStorage
         _context.SaveChanges();
         return true;
     }
+    
+    public List<ToDoItem> GetByTitle(string title, string userId) =>
+        _context.Items
+            .Where(i => i.UserId == userId && i.Title.ToLower().Contains(title.ToLower()))
+            .ToList();
 }

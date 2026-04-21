@@ -18,7 +18,7 @@ public class ToDoController : Controller
      _toDoManager = toDoManager;
  }
 
- public IActionResult Index(DateTime? startDate, DateTime? endDate)
+ public IActionResult Index(DateTime? startDate, DateTime? endDate, string? title)
  {
      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
@@ -38,6 +38,13 @@ public class ToDoController : Controller
      else
      {
          items = _toDoManager.GetAllItems(userId);
+     }
+
+     if (!string.IsNullOrWhiteSpace(title))
+     {
+         items = items
+             .Where(item => item.Title.Contains(title, StringComparison.OrdinalIgnoreCase))
+             .ToList();
      }
 
      return View(items);
