@@ -12,4 +12,6 @@ public class EditToDoItemViewModel
         [Required(ErrorMessage = "Date is required")]
         [Display(Name = "Event Date")]
         public required DateTime TargetDayTime { get; set; }
+        public string? ConfirmedConflictKey { get; set; }
+        public bool IgnoreTimeConflicts { get; set; }
 }

@@ -57,7 +57,7 @@ public class ToDoController : Controller
  }
  public IActionResult Create()
  {
-     return View();
+     return View(new CreateToDoItemViewModel());
  }
 
  [HttpPost]
@@ -74,14 +74,37 @@ public class ToDoController : Controller
     
      if (model.ItemType == ToDoItemTypes.DayOfBirth && string.IsNullOrEmpty(model.PersonName))
          ModelState.AddModelError("PersonName", "Person name is required for a Date of Birth");
+     
      if (!ModelState.IsValid)
          return View(model);
+     
      var item = ToDoItemMapper.FromViewModel(model);
+     
      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
      item.UserId = userId!;
+     
+     var currentConflictKey = ToConflictKey(item.TargetDayTime);
+     var hasConflict = _toDoManager.HasTimeConflictItem(item.TargetDayTime, userId!, null);
+     var isConfirmed = model.IgnoreTimeConflicts && model.ConfirmedConflictKey == currentConflictKey;
+     
+     if (hasConflict && !isConfirmed)
+     {
+         ModelState.AddModelError("",
+             "You already have another item scheduled for this time. " +
+             "Change the time please or continue anyway");
+         
+         model.IgnoreTimeConflicts = true;
+         model.ConfirmedConflictKey = currentConflictKey;
+         
+         ModelState.Remove(nameof(model.IgnoreTimeConflicts));
+         ModelState.Remove(nameof(model.ConfirmedConflictKey));
+         
+         return View(model);
+     }
      _toDoManager.AddItem(item);
      return RedirectToAction("Index");
  }
+ 
  [HttpPost]
  public IActionResult Delete(Guid id)
  {
@@ -112,6 +135,7 @@ public class ToDoController : Controller
          Description = item.Description,
          TargetDayTime = item.TargetDayTime
      };
+     
      return View(model);
  }
 
@@ -122,7 +146,26 @@ public class ToDoController : Controller
              return View(model);
 
          var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+         
+         var currentConflictKey = ToConflictKey(model.TargetDayTime);
+         var hasConflict = _toDoManager.HasTimeConflictItem(model.TargetDayTime, userId!, model.Id);
+         var isConfirmed = model.IgnoreTimeConflicts && model.ConfirmedConflictKey == currentConflictKey;
+     
+         if (hasConflict && !isConfirmed)
+         {
+             ModelState.AddModelError("",
+                 "You already have another item scheduled for this time. " +
+                 "Change the time please or continue anyway");
+         
+             model.IgnoreTimeConflicts = true;
+             model.ConfirmedConflictKey = currentConflictKey;
+             
+             ModelState.Remove(nameof(model.IgnoreTimeConflicts));
+             ModelState.Remove(nameof(model.ConfirmedConflictKey));
+         
+             return View(model);
+         }
+         
          var updated = _toDoManager.UpdateItem(
              model.Id,
              userId!,
@@ -135,5 +178,8 @@ public class ToDoController : Controller
 
          return RedirectToAction("Index");
      }
+ 
+     private static string ToConflictKey(DateTime date) =>
+         $"{date.Year:D4}{date.Month:D2}{date.Day:D2}{date.Hour:D2}{date.Minute:D2}";
  }
  

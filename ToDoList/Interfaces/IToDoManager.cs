@@ -14,5 +14,6 @@ public interface IToDoManager
     List<ToDoItem> GetItemsByDateTimeRange(DateTime startDate, DateTime endDate, string userId);
     List<ToDoItem> GetItemsBySpecificDate(DateTime date, string userId);
     List<ToDoEvent> GetAllEvents(string userId);
+    bool HasTimeConflictItem(DateTime date, string userId, Guid? currentItemId);
     bool UpdateItem(Guid id, string userId, string title, string description, DateTime targetDayTime);
 }

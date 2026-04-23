@@ -77,4 +77,7 @@ public class ToDoManager : IToDoManager
         _eventStorage.Save(new ToDoEvent(ToDoEventTypes.ItemEdited, userId, title, DateTime.Now));
         return true;
     }
+
+    public bool HasTimeConflictItem(DateTime date, string userId, Guid? currentItemId) => 
+        _storage.HasTimeConflict(date, userId, currentItemId);
 }

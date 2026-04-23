@@ -72,4 +72,19 @@ public class EfToDoStorage : IToDoStorage
         _context.Items
             .Where(i => i.UserId == userId && i.Title.ToLower().Contains(title.ToLower()))
             .ToList();
+
+    public bool HasTimeConflict(DateTime date, string userId, Guid? currentItemId)
+    {
+        var minuteStart = new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0);
+        var minuteEnd = minuteStart.AddMinutes(1);
+        
+        var result = _context.Items
+            .Any(i => i.UserId == userId &&
+                      i.TargetDayTime >= minuteStart &&
+                      i.TargetDayTime < minuteEnd &&
+                      i.Id != currentItemId);
+        return result;
+
+    }
+
 }

@@ -10,7 +10,10 @@
 
 <form asp-action="Create" method="post" class="card shadow-sm p-4">
     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
+    
+    <input asp-for="IgnoreTimeConflicts" type="hidden" />
+    <input asp-for="ConfirmedConflictKey" type="hidden" />
+    
     <div class="mb-3">
         <label asp-for="Title" class="form-label">Title</label>
         <input asp-for="Title" class="form-control" />
@@ -24,7 +27,8 @@
 
     <div class="mb-3">
         <label asp-for="TargetDayTime" class="form-label">Date and Time</label>
-        <input asp-for="TargetDayTime" type="datetime-local" class="form-control" />
+        <input asp-for="TargetDayTime" asp-format="{0:yyyy-MM-ddTHH:mm}" 
+               type="datetime-local" class="form-control" />
         <span asp-validation-for="TargetDayTime" class="text-danger"></span>
     </div>
 
@@ -57,7 +61,15 @@
     </div>
 
     <div class="d-flex gap-2 mt-3">
-        <button type="submit" class="btn btn-primary">Create</button>
+        @if (Model.IgnoreTimeConflicts)
+        {
+            <button type="submit" class="btn btn-warning">Create anyway</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary">Create</button>
+        }
+
         <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </div>
 </form>

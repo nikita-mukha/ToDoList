@@ -13,5 +13,6 @@ public interface IToDoStorage
     List<ToDoItem> GetByTitle(string title, string userId);
     List<ToDoItem> GetByDateRange(DateTime start, DateTime end, string userId);
     List<ToDoItem> GetByDate(DateTime date, string userId);
+    bool HasTimeConflict(DateTime date, string userId, Guid? currentItemId);
     bool Update(Guid id, string userId, string title, string description, DateTime targetDayTime);
 }
