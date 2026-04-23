@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ToDoList.Interfaces;
 using ToDoList.Models;
 
@@ -12,79 +13,76 @@ public class EfToDoStorage : IToDoStorage
         _context = context;
     }
 
-    public void Add(ToDoItem item)
+    public async Task AddAsync(ToDoItem item)
     {
         _context.Items.Add(item);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public ToDoItem? GetById(Guid id, string userId) => 
-        _context.Items.FirstOrDefault(i => i.Id == id && i.UserId == userId);
+    public Task<ToDoItem?> GetByIdAsync(Guid id, string userId) =>
+        _context.Items.FirstOrDefaultAsync(i => i.Id == id && i.UserId == userId);
 
-    public bool Remove(Guid id, string userId)
+    public async Task<bool> RemoveAsync(Guid id, string userId)
     {
-        var item = _context.Items.FirstOrDefault(i => i.Id == id && i.UserId == userId);
-        if (item == null) 
+        var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id && i.UserId == userId);
+        if (item == null)
             return false;
         _context.Items.Remove(item);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return true;
     }
 
-    public bool Complete(Guid id, string userId)
+    public async Task<bool> CompleteAsync(Guid id, string userId)
     {
-        var item = _context.Items.FirstOrDefault(i => i.Id == id && i.UserId == userId);
+        var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id && i.UserId == userId);
         if (item == null)
             return false;
         item.IsCompleted = true;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return true;
     }
 
-    public List<ToDoItem> GetAll(string userId) => 
-        _context.Items.Where(i => i.UserId == userId).ToList();
+    public Task<List<ToDoItem>> GetAllAsync(string userId) =>
+        _context.Items.Where(i => i.UserId == userId).ToListAsync();
 
-    public List<ToDoItem> GetActive(string userId) => 
-        _context.Items.Where(i => i.UserId == userId && i.IsCompleted == false).ToList();
+    public Task<List<ToDoItem>> GetActiveAsync(string userId) =>
+        _context.Items.Where(i => i.UserId == userId && i.IsCompleted == false).ToListAsync();
 
-    public List<ToDoItem> GetByDateRange(DateTime start, DateTime end, string userId) => 
+    public Task<List<ToDoItem>> GetByDateRangeAsync(DateTime start, DateTime end, string userId) =>
         _context.Items.Where(i =>
             i.UserId == userId &&
             i.TargetDayTime.Date >= start.Date &&
-            i.TargetDayTime.Date <= end.Date).ToList();
+            i.TargetDayTime.Date <= end.Date).ToListAsync();
 
-    public List<ToDoItem> GetByDate(DateTime date, string userId) =>
-        _context.Items.Where(i => i.UserId == userId && i.TargetDayTime.Date == date.Date).ToList();
-    
-    public bool Update(Guid id, string userId, string title, string description, DateTime targetDayTime)
+    public Task<List<ToDoItem>> GetByDateAsync(DateTime date, string userId) =>
+        _context.Items.Where(i => i.UserId == userId && i.TargetDayTime.Date == date.Date).ToListAsync();
+
+    public async Task<bool> UpdateAsync(Guid id, string userId, string title, string description, DateTime targetDayTime)
     {
-        var item = _context.Items.FirstOrDefault(i => i.Id == id && i.UserId == userId);
+        var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id && i.UserId == userId);
         if (item == null)
             return false;
         item.Title = title;
         item.Description = description;
         item.TargetDayTime = targetDayTime;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return true;
     }
-    
-    public List<ToDoItem> GetByTitle(string title, string userId) =>
+
+    public Task<List<ToDoItem>> GetByTitleAsync(string title, string userId) =>
         _context.Items
             .Where(i => i.UserId == userId && i.Title.ToLower().Contains(title.ToLower()))
-            .ToList();
+            .ToListAsync();
 
-    public bool HasTimeConflict(DateTime date, string userId, Guid? currentItemId)
+    public Task<bool> HasTimeConflictAsync(DateTime date, string userId, Guid? currentItemId)
     {
         var minuteStart = new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0);
         var minuteEnd = minuteStart.AddMinutes(1);
-        
-        var result = _context.Items
-            .Any(i => i.UserId == userId &&
-                      i.TargetDayTime >= minuteStart &&
-                      i.TargetDayTime < minuteEnd &&
-                      i.Id != currentItemId);
-        return result;
 
+        return _context.Items
+            .AnyAsync(i => i.UserId == userId &&
+                           i.TargetDayTime >= minuteStart &&
+                           i.TargetDayTime < minuteEnd &&
+                           i.Id != currentItemId);
     }
-
 }

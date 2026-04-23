@@ -2,10 +2,10 @@ using ToDoList.Enums;
 
 namespace ToDoList.Models;
 
-public class Task : ToDoItem
+public class ToDoTask : ToDoItem
 {
 
-    public Task(DateTime targetDayTime,
+    public ToDoTask(DateTime targetDayTime,
         ToDoItemTypes itemType,
         bool isCompleted,
         string title,

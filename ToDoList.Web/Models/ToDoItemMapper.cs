@@ -9,7 +9,7 @@ public static class ToDoItemMapper
     {
         return model.ItemType switch
         { 
-            ToDoItemTypes.Task => new ToDoList.Models.Task(
+            ToDoItemTypes.Task => new ToDoTask(
                 targetDayTime: model.TargetDayTime,
                 itemType: model.ItemType,
                 title: model.Title,
@@ -41,7 +41,7 @@ public static class ToDoItemMapper
                 description: model.Description ?? "",
                 nameOfPersonWithDoB: model.PersonName ?? ""),
 
-        _ => throw new ArgumentException("Invalid item type")
+            _ => throw new ArgumentException("Invalid item type")
         };
     }
 }

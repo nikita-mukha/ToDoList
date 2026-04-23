@@ -4,6 +4,6 @@ namespace ToDoList.Interfaces;
 
 public interface IEventStorage
 {
-    void Save(ToDoEvent toDoEvent);
-    List<ToDoEvent> Load();
+    Task SaveAsync(ToDoEvent toDoEvent);
+    Task<List<ToDoEvent>> LoadAsync();
 }

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ToDoList.Interfaces;
 using ToDoList.Models;
 
@@ -6,16 +7,17 @@ namespace ToDoList.Data;
 public class EfEventStorage : IEventStorage
 {
     private readonly AppDbContext _context;
-    
+
     public EfEventStorage(AppDbContext context)
     {
         _context = context;
     }
-    public void Save(ToDoEvent toDoEvent)
+
+    public async Task SaveAsync(ToDoEvent toDoEvent)
     {
         _context.Events.Add(toDoEvent);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public List<ToDoEvent> Load() => _context.Events.ToList();
+    public Task<List<ToDoEvent>> LoadAsync() => _context.Events.ToListAsync();
 }

@@ -28,7 +28,7 @@ public class ItemFactoryTests
         
         var result = factory.Create();
         
-        Assert.IsType<ToDoList.Models.Task>(result);
+        Assert.IsType<ToDoTask>(result);
         Assert.Equal(new DateTime 
             (2026,11,11,14,00,00),
             result.TargetDayTime);

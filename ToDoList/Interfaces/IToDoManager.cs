@@ -4,16 +4,16 @@ namespace ToDoList.Interfaces;
 
 public interface IToDoManager
 {
-    void AddItem(ToDoItem item);
-    bool RemoveItem(Guid id, string userId);
-    bool CompleteItem(Guid id, string userId);
-    ToDoItem? GetItemById(Guid id, string userId);
-    List<ToDoItem> GetAllItems(string userId);
-    List<ToDoItem> GetActiveItems(string userId);
-    List<ToDoItem> GetItemByTitle(string title, string userId);
-    List<ToDoItem> GetItemsByDateTimeRange(DateTime startDate, DateTime endDate, string userId);
-    List<ToDoItem> GetItemsBySpecificDate(DateTime date, string userId);
-    List<ToDoEvent> GetAllEvents(string userId);
-    bool HasTimeConflictItem(DateTime date, string userId, Guid? currentItemId);
-    bool UpdateItem(Guid id, string userId, string title, string description, DateTime targetDayTime);
+    Task AddItemAsync(ToDoItem item);
+    Task<bool> RemoveItemAsync(Guid id, string userId);
+    Task<bool> CompleteItemAsync(Guid id, string userId);
+    Task<ToDoItem?> GetItemByIdAsync(Guid id, string userId);
+    Task<List<ToDoItem>> GetAllItemsAsync(string userId);
+    Task<List<ToDoItem>> GetActiveItemsAsync(string userId);
+    Task<List<ToDoItem>> GetItemByTitleAsync(string title, string userId);
+    Task<List<ToDoItem>> GetItemsByDateTimeRangeAsync(DateTime startDate, DateTime endDate, string userId);
+    Task<List<ToDoItem>> GetItemsBySpecificDateAsync(DateTime date, string userId);
+    Task<List<ToDoEvent>> GetAllEventsAsync(string userId);
+    Task<bool> HasTimeConflictItemAsync(DateTime date, string userId, Guid? currentItemId);
+    Task<bool> UpdateItemAsync(Guid id, string userId, string title, string description, DateTime targetDayTime);
 }

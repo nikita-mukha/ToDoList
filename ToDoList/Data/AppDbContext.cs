@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Models;
-using Task = ToDoList.Models.Task;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ToDoList.Data;
@@ -23,7 +22,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
         
         modelBuilder.Entity<ToDoItem>()
             .HasDiscriminator<string>("Discriminator")
-            .HasValue<Task>("Task")
+            .HasValue<ToDoTask>("Task")
             .HasValue<Call>("Call")
             .HasValue<Meeting>("Meeting")
             .HasValue<DateOfBirth>("DateOfBirth");

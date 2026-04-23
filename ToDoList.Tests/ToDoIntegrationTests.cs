@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using ToDoList.Models;
 using ToDoList.Web.Models;
-using Task = System.Threading.Tasks.Task;
 
 namespace ToDoList.Tests;
 

@@ -96,9 +96,9 @@ public class ItemFactory
             nameOfPersonWithDoB: name);
     }
 
-    private Task CreateTask(string title, string description, DateTime date)
+    private ToDoTask CreateTask(string title, string description, DateTime date)
     {
-        return new Task(
+        return new ToDoTask(
             targetDayTime: date,
             itemType: ToDoItemTypes.Task,
             description: description,
