@@ -19,5 +19,8 @@ public class EfEventStorage : IEventStorage
         await _context.SaveChangesAsync();
     }
 
-    public Task<List<ToDoEvent>> LoadAsync() => _context.Events.ToListAsync();
+    public async Task<List<ToDoEvent>> LoadAsync(string userId)
+    {
+        return await _context.Events.Where(e => e.UserId == userId).ToListAsync();
+    }
 }

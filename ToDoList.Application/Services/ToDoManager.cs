@@ -63,11 +63,7 @@ public class ToDoManager : IToDoManager
     public Task<List<ToDoItem>> GetItemsBySpecificDateAsync(DateTime date, string userId) =>
         _storage.GetByDateAsync(date, userId);
 
-    public async Task<List<ToDoEvent>> GetAllEventsAsync(string userId)
-    {
-        var events = await _eventStorage.LoadAsync();
-        return events.Where(e => e.UserId == userId).ToList();
-    }
+    public Task<List<ToDoEvent>> GetAllEventsAsync(string userId) => _eventStorage.LoadAsync(userId);
 
     public async Task<bool> UpdateItemAsync(Guid id, string userId, string title, string description, DateTime targetDayTime)
     {
