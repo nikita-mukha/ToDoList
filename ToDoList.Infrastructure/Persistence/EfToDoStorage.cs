@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using ToDoList.Interfaces;
-using ToDoList.Models;
+using ToDoList.Application.Interfaces;
+using ToDoList.Domain.Entities;
 
-namespace ToDoList.Data;
+namespace ToDoList.Infrastructure.Persistence;
 
 public class EfToDoStorage : IToDoStorage
 {

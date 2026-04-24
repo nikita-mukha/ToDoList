@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ToDoList.Data;
-using ToDoList.Interfaces;
-using ToDoList.Models;
-using EfToDoStorage = ToDoList.Data.EfToDoStorage;
+using ToDoList.Application.Interfaces;
+using ToDoList.Application.Services;
+using ToDoList.Infrastructure.Identity;
+using ToDoList.Infrastructure.Persistence;
+using EfToDoStorage = ToDoList.Infrastructure.Persistence.EfToDoStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
-using ToDoList.Models;
+using ToDoList.Domain.Entities;
 
-namespace ToDoList.Interfaces;
+namespace ToDoList.Application.Interfaces;
 
 public interface IEventStorage
 {

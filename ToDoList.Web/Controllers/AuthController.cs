@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Models;
+using ToDoList.Infrastructure.Identity;
 using ToDoList.Web.Models;
 
 namespace ToDoList.Web.Controllers;

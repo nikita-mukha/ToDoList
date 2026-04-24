@@ -1,10 +1,9 @@
-using ToDoList.Enums;
-using ToDoList.Models;
 using Xunit;
 using Assert = Xunit.Assert;
 using Moq;
-using ToDoList.Interfaces;
-using ToDoList.UTests.TestResults;
+using ToDoList.Application.Services;
+using ToDoList.Domain.Entities;
+using ToDoList.Domain.Enums;
 
 namespace ToDoList.UTests;
 
@@ -13,11 +12,11 @@ public class ToDoManagerTests
     private const string TestUserId = "user-1";
     private const string TestUserId2 = "user-2";
 
-    private ToDoList.Models.ToDoManager CreateToDoList()
+    private ToDoManager CreateToDoList()
     {
         var eventStorage = new FakeEventStorage();
         var storage = new FakeStorage();
-        return new ToDoList.Models.ToDoManager(storage, eventStorage);
+        return new ToDoManager(storage, eventStorage);
     }
 
     [Fact]

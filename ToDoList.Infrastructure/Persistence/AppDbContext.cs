@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ToDoList.Models;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using ToDoList.Domain.Entities;
+using ToDoList.Infrastructure.Identity;
 
-namespace ToDoList.Data;
+namespace ToDoList.Infrastructure.Persistence;
 
 public class AppDbContext : IdentityDbContext<ApplicationUser>
 {

@@ -1,7 +1,7 @@
-using ToDoList.Interfaces;
-using ToDoList.Models;
+using ToDoList.Application.Interfaces;
+using ToDoList.Domain.Entities;
 
-namespace ToDoList.UTests.TestResults;
+namespace ToDoList.UTests;
 
 public class FakeEventStorage : IEventStorage
 {

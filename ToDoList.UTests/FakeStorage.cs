@@ -1,5 +1,5 @@
-using ToDoList.Interfaces;
-using ToDoList.Models;
+using ToDoList.Application.Interfaces;
+using ToDoList.Domain.Entities;
 
 namespace ToDoList.UTests;
 

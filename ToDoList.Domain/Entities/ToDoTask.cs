@@ -1,6 +1,6 @@
-using ToDoList.Enums;
+using ToDoList.Domain.Enums;
 
-namespace ToDoList.Models;
+namespace ToDoList.Domain.Entities;
 
 public class ToDoTask : ToDoItem
 {

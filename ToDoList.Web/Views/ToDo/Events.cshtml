@@ -1,4 +1,4 @@
-@model List<ToDoList.Models.ToDoEvent>
+@model List<ToDoList.Domain.Entities.ToDoEvent>
 
 @{
     ViewBag.Title = "Event Log";
@@ -38,14 +38,14 @@ else
 }
 
 @functions {
-    private static (string Text, string BadgeClass) GetEventDisplay(ToDoList.Enums.ToDoEventTypes eventType)
+    private static (string Text, string BadgeClass) GetEventDisplay(ToDoList.Domain.Enums.ToDoEventTypes eventType)
     {
         return eventType switch
         {
-            ToDoList.Enums.ToDoEventTypes.ItemAdded => ("Added", "bg-primary"),
-            ToDoList.Enums.ToDoEventTypes.ItemCompleted => ("Completed", "bg-success"),
-            ToDoList.Enums.ToDoEventTypes.ItemRemoved => ("Removed", "bg-danger"),
-            ToDoList.Enums.ToDoEventTypes.ItemEdited => ("Edited", "bg-warning text-dark"),
+            ToDoList.Domain.Enums.ToDoEventTypes.ItemAdded => ("Added", "bg-primary"),
+            ToDoList.Domain.Enums.ToDoEventTypes.ItemCompleted => ("Completed", "bg-success"),
+            ToDoList.Domain.Enums.ToDoEventTypes.ItemRemoved => ("Removed", "bg-danger"),
+            ToDoList.Domain.Enums.ToDoEventTypes.ItemEdited => ("Edited", "bg-warning text-dark"),
             _ => (eventType.ToString(), "bg-secondary")
         };
     }

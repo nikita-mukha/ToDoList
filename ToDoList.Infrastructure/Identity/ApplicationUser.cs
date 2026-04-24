@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace ToDoList.Models;
+namespace ToDoList.Infrastructure.Identity;
 
 public class ApplicationUser : IdentityUser
 {

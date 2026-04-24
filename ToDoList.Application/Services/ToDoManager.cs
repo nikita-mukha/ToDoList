@@ -1,7 +1,8 @@
-using ToDoList.Enums;
-using ToDoList.Interfaces;
+using ToDoList.Application.Interfaces;
+using ToDoList.Domain.Entities;
+using ToDoList.Domain.Enums;
 
-namespace ToDoList.Models;
+namespace ToDoList.Application.Services;
 
 public class ToDoManager : IToDoManager
 {

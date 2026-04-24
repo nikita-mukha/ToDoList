@@ -1,4 +1,4 @@
-namespace ToDoList.Enums;
+namespace ToDoList.Domain.Enums;
 
 public enum ToDoEventTypes
 {

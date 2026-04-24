@@ -1,7 +1,7 @@
-using ToDoList.Enums;
 using System.Text.Json.Serialization;
+using ToDoList.Domain.Enums;
 
-namespace ToDoList.Models;
+namespace ToDoList.Domain.Entities;
 [JsonDerivedType(typeof(Call), typeDiscriminator: "Call")]
 [JsonDerivedType(typeof(Meeting), typeDiscriminator: "Meeting")]
 [JsonDerivedType(typeof(DateOfBirth), typeDiscriminator: "DateOfBirth")]
