@@ -1,7 +1,7 @@
-using ToDoList.Interfaces;
-using ToDoList.Models;
+using ToDoList.Application.Interfaces;
+using ToDoList.Domain.Entities;
 
-namespace ToDoList.UTests.TestResults;
+namespace ToDoList.UTests;
 
 public class FakeEventStorage : IEventStorage
 {
@@ -13,5 +13,10 @@ public class FakeEventStorage : IEventStorage
         return Task.CompletedTask;
     }
 
-    public Task<List<ToDoEvent>> LoadAsync() => Task.FromResult(Events);
+    public Task<List<ToDoEvent>> LoadAsync(string userId)
+    {
+        return Task.FromResult(
+            Events.Where(e => e.UserId == userId).ToList()
+        );
+    }
 }

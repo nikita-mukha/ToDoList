@@ -7,7 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ToDoList\ToDoList.csproj" />
+      <ProjectReference Include="..\ToDoList.Application\ToDoList.Application.csproj" />
+      <ProjectReference Include="..\ToDoList.Domain\ToDoList.Domain.csproj" />
+      <ProjectReference Include="..\ToDoList.Infrastructure\ToDoList.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

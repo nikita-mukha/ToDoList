@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using ToDoList.Models;
+using ToDoList.Infrastructure.Identity;
 using ToDoList.Web.Models;
 
 namespace ToDoList.Tests;

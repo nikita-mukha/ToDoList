@@ -1,9 +1,9 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Enums;
-using ToDoList.Interfaces;
-using ToDoList.Models;
+using ToDoList.Application.Interfaces;
+using ToDoList.Domain.Entities;
+using ToDoList.Domain.Enums;
 using ToDoList.Web.Models;
 
 namespace ToDoList.Web.Controllers;

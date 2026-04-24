@@ -1,5 +1,5 @@
-using ToDoList.Enums;
-using ToDoList.Models;
+using ToDoList.Domain.Entities;
+using ToDoList.Domain.Enums;
 
 namespace ToDoList.Web.Models;
 

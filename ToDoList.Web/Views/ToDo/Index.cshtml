@@ -1,4 +1,4 @@
-@model List<ToDoList.Models.ToDoItem>
+@model List<ToDoList.Domain.Entities.ToDoItem>
 
 @{
     var showCompleted = Context.Request.Query["showCompleted"] == "true";
@@ -6,7 +6,7 @@
     var endDate = Context.Request.Query["endDate"].ToString();
     var title = Context.Request.Query["title"].ToString();
 
-    List<ToDoList.Models.ToDoItem> visibleItems;
+    List<ToDoList.Domain.Entities.ToDoItem> visibleItems;
 
     if (showCompleted)
     {
@@ -118,18 +118,18 @@ else
                         <p class="card-text mb-2">@item.Description</p>
                     }
 
-                    @if (item is ToDoList.Models.Call call)
+                    @if (item is ToDoList.Domain.Entities.Call call)
                     {
                         <p class="mb-1"><strong>Invited:</strong> @string.Join(", ", call.InvitedPerson)</p>
                     }
 
-                    @if (item is ToDoList.Models.Meeting meeting)
+                    @if (item is ToDoList.Domain.Entities.Meeting meeting)
                     {
                         <p class="mb-1"><strong>Invited:</strong> @string.Join(", ", meeting.InvitedPerson)</p>
                         <p class="mb-1"><strong>Place:</strong> @meeting.Place</p>
                     }
 
-                    @if (item is ToDoList.Models.DateOfBirth dob)
+                    @if (item is ToDoList.Domain.Entities.DateOfBirth dob)
                     {
                         <p class="mb-1"><strong>Person:</strong> @dob.NameOfPersonWithDoB</p>
                     }
