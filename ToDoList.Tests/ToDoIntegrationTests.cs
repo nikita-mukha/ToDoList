@@ -125,7 +125,7 @@ public class ToDoIntegrationTests : IClassFixture<WebApplicationFactory<Program>
         var formData = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
         {
             new("UserName", userName),
-            new("Password", password),
+            new("Password", password)
         });
 
         var response = await client.PostAsync("/Auth/Login", formData);

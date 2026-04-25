@@ -30,14 +30,14 @@ public class TodosApiController : ControllerBase
             items = items.Where(item => item.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        var result = items.Select(item => new ToDoItemDTO
+        var result = items.Select(item => new ToDoItemDto
         {
             Id = item.Id,
             Title = item.Title,
             Description = item.Description,
             TargetDayTime = item.TargetDayTime,
             IsCompleted = item.IsCompleted,
-            ItemType = item.ItemType.ToString(),
+            ItemType = item.ItemType.ToString()
         }).ToList();
 
         return Ok(result);

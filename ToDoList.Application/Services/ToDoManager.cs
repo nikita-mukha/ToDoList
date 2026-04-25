@@ -55,7 +55,8 @@ public class ToDoManager : IToDoManager
 
     public Task<List<ToDoItem>> GetActiveItemsAsync(string userId) => _storage.GetActiveAsync(userId);
 
-    public Task<List<ToDoItem>> GetItemByTitleAsync(string title, string userId) => _storage.GetByTitleAsync(title, userId);
+    public Task<List<ToDoItem>> GetItemByTitleAsync(string title, string userId) => 
+        _storage.GetByTitleAsync(title, userId);
 
     public Task<List<ToDoItem>> GetItemsByDateTimeRangeAsync(DateTime startDate, DateTime endDate, string userId) =>
         _storage.GetByDateRangeAsync(startDate, endDate, userId);
@@ -65,7 +66,11 @@ public class ToDoManager : IToDoManager
 
     public Task<List<ToDoEvent>> GetAllEventsAsync(string userId) => _eventStorage.LoadAsync(userId);
 
-    public async Task<bool> UpdateItemAsync(Guid id, string userId, string title, string description, DateTime targetDayTime)
+    public async Task<bool> UpdateItemAsync(Guid id,
+        string userId, 
+        string title, 
+        string description, 
+        DateTime targetDayTime)
     {
         var item = await _storage.GetByIdAsync(id, userId);
         if (item == null)

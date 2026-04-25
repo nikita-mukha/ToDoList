@@ -1,6 +1,6 @@
 namespace ToDoList.Web.Models;
 
-public class ToDoItemDTO
+public class ToDoItemDto
 {
     public Guid Id { get; set; }
     public DateTime TargetDayTime { get; set; }
