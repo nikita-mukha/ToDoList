@@ -8,7 +8,7 @@ public static class ToDoItemMapper
     public static ToDoItem FromViewModel(CreateToDoItemViewModel model)
     {
         return model.ItemType switch
-        { 
+        {
             ToDoItemTypes.Task => new ToDoTask(
                 targetDayTime: model.TargetDayTime,
                 itemType: model.ItemType,

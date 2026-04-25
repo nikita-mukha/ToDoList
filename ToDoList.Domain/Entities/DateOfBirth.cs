@@ -4,7 +4,7 @@ namespace ToDoList.Domain.Entities;
 
 public class DateOfBirth : ToDoItem
 {
-    public string NameOfPersonWithDoB {get; set;}
+    public string NameOfPersonWithDoB { get; set; }
 
     public DateOfBirth(DateTime targetDayTime,
         ToDoItemTypes itemType,
@@ -12,7 +12,7 @@ public class DateOfBirth : ToDoItem
         bool isCompleted,
         string nameOfPersonWithDoB,
         string description = "")
-        : base(targetDayTime, itemType,title, isCompleted, description)
+        : base(targetDayTime, itemType, title, isCompleted, description)
     {
         NameOfPersonWithDoB = nameOfPersonWithDoB;
     }

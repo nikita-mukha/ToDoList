@@ -17,9 +17,9 @@ public class AuthController : Controller
         _userManager = userManager;
         _signInManager = signInManager;
     }
-    
+
     public IActionResult Register() => View();
-    
+
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
@@ -34,19 +34,19 @@ public class AuthController : Controller
             await _signInManager.SignInAsync(user, isPersistent: false);
             return RedirectToAction("Index", "ToDo");
         }
-        
+
         foreach (var error in result.Errors)
             ModelState.AddModelError(string.Empty, error.Description);
 
         return View(model);
     }
-    
+
     public IActionResult Login(string? returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
     {
@@ -73,7 +73,7 @@ public class AuthController : Controller
         ViewData["ReturnUrl"] = returnUrl;
         return View(model);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Logout()
     {

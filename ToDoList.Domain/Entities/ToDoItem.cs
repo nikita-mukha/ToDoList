@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using ToDoList.Domain.Enums;
 
 namespace ToDoList.Domain.Entities;
+
 [JsonDerivedType(typeof(Call), typeDiscriminator: "Call")]
 [JsonDerivedType(typeof(Meeting), typeDiscriminator: "Meeting")]
 [JsonDerivedType(typeof(DateOfBirth), typeDiscriminator: "DateOfBirth")]
@@ -10,15 +11,15 @@ public abstract class ToDoItem
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string UserId { get; set; } = string.Empty;
-    public DateTime TargetDayTime {get; set;}
-    public ToDoItemTypes ItemType {get; set;}
-    public string Description {get; set;}
-    public string Title {get; set;}
-    public bool IsCompleted {get; set;}
+    public DateTime TargetDayTime { get; set; }
+    public ToDoItemTypes ItemType { get; set; }
+    public string Description { get; set; }
+    public string Title { get; set; }
+    public bool IsCompleted { get; set; }
 
-    public ToDoItem(DateTime targetDayTime, 
-        ToDoItemTypes itemType, 
-        string title, 
+    public ToDoItem(DateTime targetDayTime,
+        ToDoItemTypes itemType,
+        string title,
         bool isCompleted,
         string description = "")
     {
@@ -30,11 +31,11 @@ public abstract class ToDoItem
     }
     public override string ToString()
     {
-        return $"\n Title: {Title}\n" + 
+        return $"\n Title: {Title}\n" +
                $" Item type: {ItemType}\n" +
                $" Date: {TargetDayTime}\n" +
                $" Description: {Description}\n" +
                $" Item status: {IsCompleted}";
     }
-    
+
 }

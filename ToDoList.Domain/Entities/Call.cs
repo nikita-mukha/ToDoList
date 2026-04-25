@@ -4,13 +4,13 @@ namespace ToDoList.Domain.Entities;
 
 public class Call : ToDoItem
 {
-    public List<string> InvitedPerson {get; set;}
-    public Call(DateTime targetDayTime, 
-        ToDoItemTypes itemType, 
-        string title, 
+    public List<string> InvitedPerson { get; set; }
+    public Call(DateTime targetDayTime,
+        ToDoItemTypes itemType,
+        string title,
         bool isCompleted,
         List<string> invitedPerson,
-        string description = "") 
+        string description = "")
         : base(targetDayTime, itemType, title, isCompleted, description)
     {
         InvitedPerson = invitedPerson;

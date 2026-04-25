@@ -27,7 +27,7 @@ public class ToDoIntegrationTests : IClassFixture<WebApplicationFactory<Program>
         Assert.NotNull(response.Headers.Location);
         Assert.Contains("/Auth/Login", response.Headers.Location!.OriginalString);
     }
-    
+
     [Fact]
     public async Task Login_WithReturnUrl_RedirectsToRequestedPage()
     {
@@ -42,14 +42,14 @@ public class ToDoIntegrationTests : IClassFixture<WebApplicationFactory<Program>
             new("Password", "qwerty12"),
             new("returnUrl", "/ToDo/Events")
         });
-        
+
         var response = await client.PostAsync("/Auth/Login", formData);
-        
+
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
         Assert.NotNull(response.Headers.Location);
         Assert.Equal("/ToDo/Events", response.Headers.Location!.OriginalString);
     }
-    
+
     [Fact]
     public async Task GetEvents_AfterLogin_ReturnsEventPage()
     {
@@ -59,14 +59,14 @@ public class ToDoIntegrationTests : IClassFixture<WebApplicationFactory<Program>
         var client = CreateClient();
 
         await LoginAsync(client, userName, "qwerty12");
-        
+
         var response = await client.GetAsync("/ToDo/Events");
         var content = await response.Content.ReadAsStringAsync();
-        
+
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Contains("Event Log", content);
     }
-    
+
     [Fact]
     public async Task CreateTodo_AfterLogin_AddsEventToEventLog()
     {
@@ -74,20 +74,20 @@ public class ToDoIntegrationTests : IClassFixture<WebApplicationFactory<Program>
         await CreateUserAsync(userName, "qwerty12");
 
         var client = CreateClient();
-        
+
         await LoginAsync(client, userName, "qwerty12");
 
         var formCreateCall = CreateTaskFormData("TestTitle", "TestDescription");
-        
-        await client.PostAsync("/ToDo/Create", formCreateCall); 
+
+        await client.PostAsync("/ToDo/Create", formCreateCall);
         var response = await client.GetAsync("/ToDo/Events");
         var content = await response.Content.ReadAsStringAsync();
-        
+
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Contains("TestTitle", content);
         Assert.Contains("Added", content);
     }
-    
+
     private static FormUrlEncodedContent CreateTaskFormData(
         string title,
         string description,
@@ -103,7 +103,7 @@ public class ToDoIntegrationTests : IClassFixture<WebApplicationFactory<Program>
             new("ItemType", "4")
         });
     }
-    
+
     private async Task CreateUserAsync(string userName, string password)
     {
         using var scope = _factory.Services.CreateScope();
@@ -119,7 +119,7 @@ public class ToDoIntegrationTests : IClassFixture<WebApplicationFactory<Program>
 
         Assert.True(result.Succeeded);
     }
-    
+
     private async Task LoginAsync(HttpClient client, string userName, string password)
     {
         var formData = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
@@ -127,8 +127,8 @@ public class ToDoIntegrationTests : IClassFixture<WebApplicationFactory<Program>
             new("UserName", userName),
             new("Password", password),
         });
-        
-       var response = await client.PostAsync("/Auth/Login", formData);
+
+        var response = await client.PostAsync("/Auth/Login", formData);
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
     }
 
