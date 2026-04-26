@@ -12,6 +12,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IToDoStorage, EfToDoStorage>();
 builder.Services.AddScoped<IEventStorage, EfEventStorage>();
 builder.Services.AddScoped<IToDoManager, ToDoManager>();
+builder.Services.AddScoped<IRecurringSeriesStorage, EfRecurringSeriesStorage>();
+builder.Services.AddScoped<IRecurringSeriesStorage, EfRecurringSeriesStorage>();
+builder.Services.AddScoped<IRecurringOccurrenceGenerator, RecurringOccurrenceGenerator>();
+builder.Services.AddScoped<IRecurringOccurrenceService, RecurringOccurrenceService>();
+builder.Services.AddScoped<IRecurringToDoService, RecurringToDoService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=todos.db"));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

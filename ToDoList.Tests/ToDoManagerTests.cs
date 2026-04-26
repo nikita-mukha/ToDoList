@@ -5,7 +5,7 @@ using ToDoList.Application.Services;
 using ToDoList.Domain.Entities;
 using ToDoList.Domain.Enums;
 
-namespace ToDoList.UTests;
+namespace ToDoList.Tests;
 
 public class ToDoManagerTests
 {

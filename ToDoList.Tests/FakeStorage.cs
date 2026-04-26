@@ -1,7 +1,7 @@
 using ToDoList.Application.Interfaces;
 using ToDoList.Domain.Entities;
 
-namespace ToDoList.UTests;
+namespace ToDoList.Tests;
 
 public class FakeStorage : IToDoStorage
 {

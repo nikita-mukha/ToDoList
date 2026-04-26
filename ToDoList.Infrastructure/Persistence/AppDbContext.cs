@@ -10,6 +10,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
     public DbSet<ToDoItem> Items { get; set; }
     public DbSet<ToDoEvent> Events { get; set; }
+    public DbSet<RecurringSeries> RecurringSeries { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -38,5 +39,11 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<Meeting>()
             .Property(m => m.InvitedPerson)
             .HasConversion(stringListConverter);
+
+        modelBuilder.Entity<RecurringSeries>()
+            .HasOne<ToDoItem>()
+            .WithOne()
+            .HasForeignKey<RecurringSeries>(r => r.SourceItemId)
+            .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
     }
 }
