@@ -59,6 +59,38 @@
         <span asp-validation-for="PersonName" class="text-danger"></span>
     </div>
 
+    <div class="form-check mb-3">
+        <input asp-for="IsRecurring" class="form-check-input" id="isRecurring" onchange="showRecurrenceFields()"/>
+        <label asp-for="IsRecurring" class="form-check-label">Repeat this item</label>
+    </div>
+
+    <div id="recurrenceFields" style="display:none">
+        <div class="mb-3">
+            <label asp-for="RecurrenceFrequency" class="form-label">Repeat</label>
+            <select asp-for="RecurrenceFrequency" class="form-select">
+                <option value="">Choose frequency</option>
+                @foreach (var frequency in Enum.GetValues<RecurrenceFrequency>())
+                {
+                    <option value="@((int)frequency)">@frequency</option>
+                }
+            </select>
+            <span asp-validation-for="RecurrenceFrequency" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="RecurrenceInterval" class="form-label">Repeat every</label>
+            <input asp-for="RecurrenceInterval" type="number" min="1" class="form-control" />
+            <span asp-validation-for="RecurrenceInterval" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="RecurrenceEndDateTime" class="form-label">End repeat on (optional)</label>
+            <input asp-for="RecurrenceEndDateTime" asp-format="{0:yyyy-MM-ddTHH:mm}"
+                   type="datetime-local" class="form-control" />
+            <span asp-validation-for="RecurrenceEndDateTime" class="text-danger"></span>
+        </div>
+    </div>
+            
     <div class="d-flex gap-2 mt-3">
         @if (Model.IgnoreTimeConflicts)
         {
@@ -94,6 +126,15 @@
     }
 
     showFields();
+</script>
+
+<script>
+    function showRecurrenceFields() {
+        var isRecurring = document.getElementById('isRecurring').checked;
+        document.getElementById('recurrenceFields').style.display = isRecurring ? 'block' : 'none';
+    }
+
+    showRecurrenceFields();
 </script>
 
 @section Scripts {

@@ -12,10 +12,12 @@ namespace ToDoList.Web.Controllers;
 public class ToDoController : Controller
 {
     private readonly IToDoManager _toDoManager;
+    private readonly IRecurringToDoService _recurringToDoService;
 
-    public ToDoController(IToDoManager toDoManager)
+    public ToDoController(IToDoManager toDoManager, IRecurringToDoService recurringToDoService)
     {
         _toDoManager = toDoManager;
+        _recurringToDoService = recurringToDoService;
     }
 
     public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, string? title)
@@ -76,6 +78,17 @@ public class ToDoController : Controller
 
         if (model.ItemType == ToDoItemTypes.DayOfBirth && string.IsNullOrEmpty(model.PersonName))
             ModelState.AddModelError("PersonName", "Person name is required for a Date of Birth");
+        
+        if (model.IsRecurring)
+        {
+            if (!model.RecurrenceFrequency.HasValue)
+                ModelState.AddModelError(nameof(model.RecurrenceFrequency),
+                    "Recurrence frequency is required");
+            
+            if (model.RecurrenceEndDateTime.HasValue && model.RecurrenceEndDateTime.Value < model.TargetDayTime)
+                ModelState.AddModelError(nameof(model.RecurrenceEndDateTime),
+                    "Recurrence end should be greater the Target event date");
+        }
 
         if (!ModelState.IsValid)
             return View(model);
@@ -104,7 +117,14 @@ public class ToDoController : Controller
             return View(model);
         }
 
-        await _toDoManager.AddItemAsync(item);
+        if (model.IsRecurring)
+            await _recurringToDoService.CreateRecurringItemAsync(
+                item,
+                model.RecurrenceFrequency!.Value,
+                model.RecurrenceInterval,
+                model.RecurrenceEndDateTime);
+        else 
+            await _toDoManager.AddItemAsync(item);
         return RedirectToAction("Index");
     }
 

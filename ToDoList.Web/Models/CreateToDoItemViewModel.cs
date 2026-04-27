@@ -21,4 +21,9 @@ public class CreateToDoItemViewModel
     public string? PersonName { get; set; }
     public string? ConfirmedConflictKey { get; set; }
     public bool IgnoreTimeConflicts { get; set; }
+    public bool IsRecurring { get; set; }
+    public RecurrenceFrequency? RecurrenceFrequency { get; set; }
+    [Range(1, 365, ErrorMessage = "Repeat interval must be at least 1")]
+    public int RecurrenceInterval { get; set; } = 1;
+    public DateTime? RecurrenceEndDateTime { get; set; }
 }
