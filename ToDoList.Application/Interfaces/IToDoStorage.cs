@@ -15,4 +15,5 @@ public interface IToDoStorage
     Task<List<ToDoItem>> GetByDateAsync(DateTime date, string userId);
     Task<bool> HasTimeConflictAsync(DateTime date, string userId, Guid? currentItemId);
     Task<bool> UpdateAsync(Guid id, string userId, string title, string description, DateTime targetDayTime);
+    Task<List<ToDoItem>> GetByIdsAsync(IEnumerable<Guid> ids, string userId);
 }

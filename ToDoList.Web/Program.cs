@@ -4,6 +4,8 @@ using ToDoList.Application.Interfaces;
 using ToDoList.Application.Services;
 using ToDoList.Infrastructure.Identity;
 using ToDoList.Infrastructure.Persistence;
+using ToDoList.Web.Interfaces;
+using ToDoList.Web.Services;
 using EfToDoStorage = ToDoList.Infrastructure.Persistence.EfToDoStorage;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,7 @@ builder.Services.AddScoped<IRecurringSeriesStorage, EfRecurringSeriesStorage>();
 builder.Services.AddScoped<IRecurringOccurrenceGenerator, RecurringOccurrenceGenerator>();
 builder.Services.AddScoped<IRecurringOccurrenceService, RecurringOccurrenceService>();
 builder.Services.AddScoped<IRecurringToDoService, RecurringToDoService>();
+builder.Services.AddScoped<IToDoIndexService, ToDoIndexService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=todos.db"));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

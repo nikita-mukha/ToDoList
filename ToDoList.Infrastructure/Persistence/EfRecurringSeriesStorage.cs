@@ -28,4 +28,20 @@ public class EfRecurringSeriesStorage : IRecurringSeriesStorage
             (!series.EndDateTime.HasValue || series.EndDateTime.Value >= rangeStart))
             .ToListAsync();
     }
+
+    public async Task<bool> StopAsync(Guid seriesId, string userId)
+    {
+        var recurringSeries = await _context.RecurringSeries
+            .FirstOrDefaultAsync(series =>
+                series.Id == seriesId &&
+                series.UserId == userId);
+
+        if (recurringSeries == null)
+            return false;
+
+        recurringSeries.IsActive = false;
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

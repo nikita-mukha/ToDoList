@@ -56,4 +56,9 @@ public class FakeStorage : IToDoStorage
 
     public Task<bool> UpdateAsync(Guid id, string userId, string title, string description, DateTime targetDayTime) =>
         throw new NotImplementedException();
+
+    public Task<List<ToDoItem>> GetByIdsAsync(IEnumerable<Guid> ids, string userId)
+    {
+        throw new NotImplementedException();
+    }
 }

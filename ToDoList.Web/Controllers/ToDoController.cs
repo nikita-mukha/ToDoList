@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoList.Application.Interfaces;
 using ToDoList.Domain.Entities;
 using ToDoList.Domain.Enums;
+using ToDoList.Web.Interfaces;
 using ToDoList.Web.Models;
 
 namespace ToDoList.Web.Controllers;
@@ -13,43 +14,32 @@ public class ToDoController : Controller
 {
     private readonly IToDoManager _toDoManager;
     private readonly IRecurringToDoService _recurringToDoService;
+    private readonly IRecurringOccurrenceService _recurringOccurrenceService;
+    private readonly IToDoIndexService _toDoIndexService;
 
-    public ToDoController(IToDoManager toDoManager, IRecurringToDoService recurringToDoService)
+    public ToDoController(
+        IToDoManager toDoManager, 
+        IRecurringToDoService recurringToDoService, 
+        IRecurringOccurrenceService recurringOccurrenceService,
+        IToDoIndexService toDoIndexService)
     {
         _toDoManager = toDoManager;
         _recurringToDoService = recurringToDoService;
+        _recurringOccurrenceService = recurringOccurrenceService;
+        _toDoIndexService = toDoIndexService;
     }
 
     public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, string? title)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-        if (startDate.HasValue && endDate.HasValue && startDate.Value.Date > endDate.Value.Date)
-        {
-            endDate = startDate;
-        }
+        var indexItems = await _toDoIndexService.GetIndexItemsAsync(
+            userId,
+            startDate,
+            endDate,
+            title);
 
-        List<ToDoItem> items;
-
-        if (startDate.HasValue)
-        {
-            items = endDate.HasValue
-                ? await _toDoManager.GetItemsByDateTimeRangeAsync(startDate.Value, endDate.Value, userId)
-                : await _toDoManager.GetItemsBySpecificDateAsync(startDate.Value, userId);
-        }
-        else
-        {
-            items = await _toDoManager.GetAllItemsAsync(userId);
-        }
-
-        if (!string.IsNullOrWhiteSpace(title))
-        {
-            items = items
-                .Where(item => item.Title.Contains(title, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
-
-        return View(items);
+        return View(indexItems);
     }
 
     public async Task<IActionResult> Events()
@@ -87,7 +77,7 @@ public class ToDoController : Controller
             
             if (model.RecurrenceEndDateTime.HasValue && model.RecurrenceEndDateTime.Value < model.TargetDayTime)
                 ModelState.AddModelError(nameof(model.RecurrenceEndDateTime),
-                    "Recurrence end should be greater the Target event date");
+                    "Recurrence end should be after the Target event date");  
         }
 
         if (!ModelState.IsValid)
@@ -204,4 +194,16 @@ public class ToDoController : Controller
 
     private static string ToConflictKey(DateTime date) =>
         $"{date.Year:D4}{date.Month:D2}{date.Day:D2}{date.Hour:D2}{date.Minute:D2}";
+
+    [HttpPost]
+    public async Task<IActionResult> StopRecurrence(Guid seriesId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var stopped = await _recurringToDoService.StopRecurringSeriesAsync(seriesId, userId!);
+        
+        if (!stopped)
+            return NotFound();
+        
+        return RedirectToAction("Index");
+    }
 }

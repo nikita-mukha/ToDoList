@@ -16,4 +16,5 @@ public interface IToDoManager
     Task<List<ToDoEvent>> GetAllEventsAsync(string userId);
     Task<bool> HasTimeConflictItemAsync(DateTime date, string userId, Guid? currentItemId);
     Task<bool> UpdateItemAsync(Guid id, string userId, string title, string description, DateTime targetDayTime);
+    Task<List<ToDoItem>> GetItemsByIdsAsync(IEnumerable<Guid> ids, string userId);
 }

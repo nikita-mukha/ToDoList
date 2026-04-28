@@ -45,4 +45,7 @@ public class RecurringToDoService : IRecurringToDoService
         };
         await _recurringSeriesStorage.SaveAsync(series);
     }
+
+    public Task<bool> StopRecurringSeriesAsync(Guid seriesId, string userId) =>
+        _recurringSeriesStorage.StopAsync(seriesId, userId);
 }

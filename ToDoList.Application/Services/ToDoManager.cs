@@ -86,4 +86,7 @@ public class ToDoManager : IToDoManager
 
     public Task<bool> HasTimeConflictItemAsync(DateTime date, string userId, Guid? currentItemId) =>
         _storage.HasTimeConflictAsync(date, userId, currentItemId);
+
+    public async Task<List<ToDoItem>> GetItemsByIdsAsync(IEnumerable<Guid> ids, string userId) =>
+        await _storage.GetByIdsAsync(ids, userId);
 }

@@ -1,4 +1,4 @@
-@model List<ToDoList.Domain.Entities.ToDoItem>
+@model List<ToDoIndexItemViewModel>
 
 @{
     var showCompleted = Context.Request.Query["showCompleted"] == "true";
@@ -6,7 +6,7 @@
     var endDate = Context.Request.Query["endDate"].ToString();
     var title = Context.Request.Query["title"].ToString();
 
-    List<ToDoList.Domain.Entities.ToDoItem> visibleItems;
+    List<ToDoIndexItemViewModel> visibleItems;
 
     if (showCompleted)
     {
@@ -14,7 +14,7 @@
     }
     else
     {
-        visibleItems = Model.Where(item => !item.IsCompleted).ToList();
+        visibleItems = Model.Where(item => !item.SourceItem.IsCompleted).ToList();
     }
 }
 
@@ -91,19 +91,24 @@ else
 else
 {
     <div class="d-flex flex-column gap-3">
-        @foreach (var item in visibleItems.OrderBy(i => i.IsCompleted).ThenBy(i => i.TargetDayTime))
+        @foreach (var item in visibleItems.OrderBy(i => i.SourceItem.IsCompleted).ThenBy(i => i.DisplayDateTime))
         {
             <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <div>
-                            <h5 class="card-title mb-1">@item.Title</h5>
+                            <h5 class="card-title mb-1">@item.SourceItem.Title</h5>
                             <div class="text-muted small">
-                                @item.TargetDayTime.ToString("dd/MM/yyyy HH:mm") · @item.ItemType
+                                @item.DisplayDateTime.ToString("dd/MM/yyyy HH:mm") · @item.SourceItem.ItemType
+                                
+                                @if (item.IsRecurring)
+                                {
+                                    <span class="badge bg-info text-dark ms-1">Recurring</span>
+                                }
                             </div>
                         </div>
 
-                        @if (item.IsCompleted)
+                        @if (item.SourceItem.IsCompleted)
                         {
                             <span class="badge bg-success">Completed</span>
                         }
@@ -113,40 +118,51 @@ else
                         }
                     </div>
 
-                    @if (!string.IsNullOrWhiteSpace(item.Description))
+                    @if (!string.IsNullOrWhiteSpace(item.SourceItem.Description))
                     {
-                        <p class="card-text mb-2">@item.Description</p>
+                        <p class="card-text mb-2">@item.SourceItem.Description</p>
                     }
 
-                    @if (item is ToDoList.Domain.Entities.Call call)
+                    @if (item.SourceItem is ToDoList.Domain.Entities.Call call)
                     {
                         <p class="mb-1"><strong>Invited:</strong> @string.Join(", ", call.InvitedPerson)</p>
                     }
 
-                    @if (item is ToDoList.Domain.Entities.Meeting meeting)
+                    @if (item.SourceItem is ToDoList.Domain.Entities.Meeting meeting)
                     {
                         <p class="mb-1"><strong>Invited:</strong> @string.Join(", ", meeting.InvitedPerson)</p>
                         <p class="mb-1"><strong>Place:</strong> @meeting.Place</p>
                     }
 
-                    @if (item is ToDoList.Domain.Entities.DateOfBirth dob)
+                    @if (item.SourceItem is ToDoList.Domain.Entities.DateOfBirth dob)
                     {
                         <p class="mb-1"><strong>Person:</strong> @dob.NameOfPersonWithDoB</p>
                     }
 
                     <div class="d-flex gap-2 mt-3">
-                        @if (!item.IsCompleted)
+                        @if (!item.IsRecurring)
                         {
-                            <form asp-action="Complete" asp-route-id="@item.Id" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-success">Complete</button>
+                            @if (!item.SourceItem.IsCompleted)
+                            {
+                                <form asp-action="Complete" asp-route-id="@item.SourceItem.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-success">Complete</button>
+                                </form>
+                            }
+
+                            <a asp-action="Edit" asp-route-id="@item.SourceItem.Id" class="btn btn-sm btn-warning">Edit</a>
+
+                            <form asp-action="Delete" asp-route-id="@item.SourceItem.Id" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>
                         }
-
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
-
-                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
+                        else 
+                        {
+                            <span class="badge bg-info text-dark">Recurring occurrence</span>
+                            <form asp-action="StopRecurrence" asp-route-id="@item.SeriesId.Value" method="post" class="d-inline">
+                                <input type="hidden" name="seriesId" value="@item.SeriesId.Value" />
+                                <button type="submit" class="btn btn-sm btn-danger">Stop recurrence</button>
+                            </form>
+                        }
                     </div>
                 </div>
             </div>

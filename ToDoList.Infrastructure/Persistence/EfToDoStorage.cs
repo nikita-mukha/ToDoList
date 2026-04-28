@@ -71,8 +71,8 @@ public class EfToDoStorage : IToDoStorage
 
     public Task<List<ToDoItem>> GetByTitleAsync(string title, string userId) =>
         _context.Items
-            .Where(i => i.UserId == userId && i.Title.ToLower().Contains(title.ToLower()))
-            .ToListAsync();
+            .Where(i => i.UserId == userId &&
+                        i.Title.ToLower().Contains(title.ToLower())).ToListAsync();
 
     public Task<bool> HasTimeConflictAsync(DateTime date, string userId, Guid? currentItemId)
     {
@@ -84,5 +84,17 @@ public class EfToDoStorage : IToDoStorage
                            i.TargetDayTime >= minuteStart &&
                            i.TargetDayTime < minuteEnd &&
                            i.Id != currentItemId);
+    }
+
+    public async Task<List<ToDoItem>> GetByIdsAsync(IEnumerable<Guid> ids, string userId)
+    {
+        var idList = ids.ToList();
+
+        if (!idList.Any())
+            return new List<ToDoItem>();
+
+        return await _context.Items
+            .Where(i => i.UserId == userId && idList.Contains(i.Id))
+            .ToListAsync();
     }
 }
