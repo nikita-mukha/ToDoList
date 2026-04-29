@@ -38,6 +38,7 @@ else
 }
 
 @functions {
+
     private static (string Text, string BadgeClass) GetEventDisplay(ToDoList.Domain.Enums.ToDoEventTypes eventType)
     {
         return eventType switch
@@ -49,4 +50,5 @@ else
             _ => (eventType.ToString(), "bg-secondary")
         };
     }
+
 }

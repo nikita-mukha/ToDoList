@@ -12,7 +12,7 @@ public class EfRecurringSeriesStorage : IRecurringSeriesStorage
     {
         _context = context;
     }
-    
+
     public async Task SaveAsync(RecurringSeries series)
     {
         _context.RecurringSeries.Add(series);

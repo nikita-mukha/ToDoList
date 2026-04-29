@@ -9,7 +9,7 @@ public class RecurringToDoService : IRecurringToDoService
     private readonly IRecurringSeriesStorage _recurringSeriesStorage;
     private readonly IToDoManager _toDoManager;
     private readonly IRecurringOccurrenceExceptionStorage _recurringOccurrenceExceptionStorage;
-    
+
     public RecurringToDoService(
         IRecurringSeriesStorage recurringSeriesStorage,
         IToDoManager toDoManager,
@@ -19,19 +19,19 @@ public class RecurringToDoService : IRecurringToDoService
         _toDoManager = toDoManager;
         _recurringOccurrenceExceptionStorage = recurringOccurrenceExceptionStorage;
     }
-    
+
     public async Task CreateRecurringItemAsync(ToDoItem sourceItem,
         RecurrenceFrequency frequency,
         int interval,
         DateTime? endDateTime)
-    { 
+    {
         ArgumentNullException.ThrowIfNull(sourceItem);
-        
+
         if (interval < 1)
         {
             throw new ArgumentOutOfRangeException(nameof(interval), "Interval must be at least 1");
         }
-        
+
         if (endDateTime.HasValue && endDateTime.Value < sourceItem.TargetDayTime)
         {
             throw new ArgumentException("End date must be after the start date", nameof(endDateTime));
@@ -54,7 +54,7 @@ public class RecurringToDoService : IRecurringToDoService
     public Task<bool> StopRecurringSeriesAsync(Guid seriesId, string userId) =>
         _recurringSeriesStorage.StopAsync(seriesId, userId);
 
-    public Task CompleteRecurringOccurrenceAsync(Guid seriesId, DateTime occurrenceDateTime, string userId) => 
+    public Task CompleteRecurringOccurrenceAsync(Guid seriesId, DateTime occurrenceDateTime, string userId) =>
         _recurringOccurrenceExceptionStorage.CompleteAsync(userId, seriesId, occurrenceDateTime);
 
     public Task CancelRecurringOccurrenceAsync(Guid seriesId, DateTime occurrenceDateTime, string userId) =>

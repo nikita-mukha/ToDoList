@@ -26,7 +26,7 @@ public class RecurringOccurrenceGenerator : IRecurringOccurrenceGenerator
     public List<RecurringOccurrence> Generate(RecurringSeries series, DateTime rangeStart, DateTime rangeEnd)
     {
         ArgumentNullException.ThrowIfNull(series);
-        
+
         var result = new List<RecurringOccurrence>();
         var currentDate = series.StartDateTime;
         var endDate = rangeEnd;
@@ -36,13 +36,13 @@ public class RecurringOccurrenceGenerator : IRecurringOccurrenceGenerator
 
         if (series.EndDateTime.HasValue && series.EndDateTime.Value < endDate)
             endDate = series.EndDateTime.Value;
-        
+
         if (endDate < rangeStart)
             return result;
-        
+
         while (currentDate < rangeStart)
             currentDate = GetNextDate(currentDate, series.Frequency, series.Interval);
-        
+
         while (currentDate <= endDate)
         {
             result.Add(new RecurringOccurrence
@@ -51,7 +51,7 @@ public class RecurringOccurrenceGenerator : IRecurringOccurrenceGenerator
                 SourceItemId = series.SourceItemId,
                 OccurrenceDateTime = currentDate
             });
-            
+
             currentDate = GetNextDate(currentDate, series.Frequency, series.Interval);
         }
         return result;

@@ -8,7 +8,7 @@
 <h1>Edit Item</h1>
 <form asp-action="Edit" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-    
+
     <input asp-for="Id" type="hidden"/>
     <input asp-for="IgnoreTimeConflicts" type="hidden"/>
     <input asp-for="ConfirmedConflictKey" type="hidden"/>
@@ -27,8 +27,8 @@
 
     <div class="mb-3">
         <label asp-for="TargetDayTime" class="form-label"></label>
-        <input asp-for="TargetDayTime" asp-format="{0:yyyy-MM-ddTHH:mm}" 
-               type="datetime-local" class="form-control" />
+        <input asp-for="TargetDayTime" asp-format="{0:yyyy-MM-ddTHH:mm}"
+               type="datetime-local" class="form-control"/>
         <span asp-validation-for="TargetDayTime" class="text-danger"></span>
     </div>
     @if (Model.IgnoreTimeConflicts)

@@ -19,20 +19,20 @@ public class RecurringOccurrenceService : IRecurringOccurrenceService
         _recurringOccurrenceGenerator = recurringOccurrenceGenerator;
         _recurringOccurrenceExceptionStorage = recurringOccurrenceExceptionStorage;
     }
-    
+
     public async Task<List<RecurringOccurrence>> GetOccurrencesAsync(
-        string userId, 
+        string userId,
         DateTime rangeStart,
         DateTime rangeEnd)
     {
         var result = new List<RecurringOccurrence>();
-        
+
         var seriesList = await _recurringSeriesStorage.LoadActiveAsync(userId, rangeStart, rangeEnd);
-        
+
         foreach (var series in seriesList)
         {
             var generatedOccurrences = _recurringOccurrenceGenerator.Generate(
-                series, 
+                series,
                 rangeStart,
                 rangeEnd);
             result.AddRange(generatedOccurrences);

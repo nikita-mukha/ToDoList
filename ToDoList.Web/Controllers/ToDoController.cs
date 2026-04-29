@@ -17,8 +17,8 @@ public class ToDoController : Controller
     private readonly IToDoIndexService _toDoIndexService;
 
     public ToDoController(
-        IToDoManager toDoManager, 
-        IRecurringToDoService recurringToDoService, 
+        IToDoManager toDoManager,
+        IRecurringToDoService recurringToDoService,
         IToDoIndexService toDoIndexService)
     {
         _toDoManager = toDoManager;
@@ -65,16 +65,16 @@ public class ToDoController : Controller
 
         if (model.ItemType == ToDoItemTypes.DayOfBirth && string.IsNullOrEmpty(model.PersonName))
             ModelState.AddModelError("PersonName", "Person name is required for a Date of Birth");
-        
+
         if (model.IsRecurring)
         {
             if (!model.RecurrenceFrequency.HasValue)
                 ModelState.AddModelError(nameof(model.RecurrenceFrequency),
                     "Recurrence frequency is required");
-            
+
             if (model.RecurrenceEndDateTime.HasValue && model.RecurrenceEndDateTime.Value < model.TargetDayTime)
                 ModelState.AddModelError(nameof(model.RecurrenceEndDateTime),
-                    "Recurrence end should be after the Target event date");  
+                    "Recurrence end should be after the Target event date");
         }
 
         if (!ModelState.IsValid)
@@ -110,17 +110,17 @@ public class ToDoController : Controller
                 model.RecurrenceFrequency!.Value,
                 model.RecurrenceInterval,
                 model.RecurrenceEndDateTime);
-        else 
+        else
             await _toDoManager.AddItemAsync(item);
         return RedirectToAction("Index");
     }
 
     [HttpPost]
     public async Task<IActionResult> Delete(
-        Guid id, 
-        DateTime? startDate, 
-        DateTime? endDate, 
-        string? title, 
+        Guid id,
+        DateTime? startDate,
+        DateTime? endDate,
+        string? title,
         bool showCompleted)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -139,7 +139,7 @@ public class ToDoController : Controller
         Guid id,
         DateTime? startDate,
         DateTime? endDate,
-        string? title, 
+        string? title,
         bool showCompleted)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -218,16 +218,16 @@ public class ToDoController : Controller
     public async Task<IActionResult> StopRecurrence(
         Guid seriesId,
         DateTime? startDate,
-        DateTime? endDate, 
+        DateTime? endDate,
         string? title,
         bool showCompleted)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var stopped = await _recurringToDoService.StopRecurringSeriesAsync(seriesId, userId!);
-        
+
         if (!stopped)
             return NotFound();
-        
+
         return RedirectToAction("Index", new
         {
             startDate,
@@ -236,20 +236,20 @@ public class ToDoController : Controller
             showCompleted
         });
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> CompleteRecurringOccurrence(
-        Guid seriesId, 
+        Guid seriesId,
         DateTime occurrenceDateTime,
         DateTime? startDate,
-        DateTime? endDate, 
+        DateTime? endDate,
         string? title,
         bool showCompleted)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        
+
         await _recurringToDoService.CompleteRecurringOccurrenceAsync(seriesId, occurrenceDateTime, userId!);
-            
+
         return RedirectToAction("Index", new
         {
             startDate,
@@ -258,20 +258,20 @@ public class ToDoController : Controller
             showCompleted
         });
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> CancelRecurringOccurrence(
-        Guid seriesId, 
+        Guid seriesId,
         DateTime occurrenceDateTime,
         DateTime? startDate,
-        DateTime? endDate, 
+        DateTime? endDate,
         string? title,
         bool showCompleted)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        
+
         await _recurringToDoService.CancelRecurringOccurrenceAsync(seriesId, occurrenceDateTime, userId!);
-            
+
         return RedirectToAction("Index", new
         {
             startDate,

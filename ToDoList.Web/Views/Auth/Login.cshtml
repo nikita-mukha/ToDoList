@@ -8,18 +8,18 @@
 <h1 class="mb-4">Login</h1>
 
 <form asp-action="Login" method="post" class="card shadow-sm p-4">
-    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]"/>
     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
     <div class="mb-3">
         <label asp-for="UserName" class="form-label">User Name</label>
-        <input asp-for="UserName" class="form-control" />
+        <input asp-for="UserName" class="form-control"/>
         <span asp-validation-for="UserName" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Password" class="form-label">Password</label>
-        <input asp-for="Password" type="password" class="form-control" />
+        <input asp-for="Password" type="password" class="form-control"/>
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
@@ -30,5 +30,5 @@
 </form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

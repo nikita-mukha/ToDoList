@@ -12,7 +12,7 @@ public class EfRecurringOccurrenceExceptionStorage : IRecurringOccurrenceExcepti
     {
         _context = context;
     }
-    
+
     public async Task<List<RecurringOccurrenceException>> LoadAsync(
         string userId,
         DateTime rangeStart,
@@ -49,7 +49,7 @@ public class EfRecurringOccurrenceExceptionStorage : IRecurringOccurrenceExcepti
                 IsCancelled = false
             });
         }
-        
+
         await _context.SaveChangesAsync();
     }
 
@@ -77,7 +77,7 @@ public class EfRecurringOccurrenceExceptionStorage : IRecurringOccurrenceExcepti
                 IsCancelled = true
             });
         }
-        
+
         await _context.SaveChangesAsync();
     }
 }

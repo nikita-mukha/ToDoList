@@ -21,8 +21,8 @@
 <h1 class="mb-4">@User.Identity!.Name's List</h1>
 
 <form asp-action="Index" method="get" class="d-flex gap-2 align-items-end mb-3">
-    <input type="hidden" name="showCompleted" value="@showCompleted.ToString().ToLower()" />
-    <input type="hidden" name="title" value="@title" />
+    <input type="hidden" name="showCompleted" value="@showCompleted.ToString().ToLower()"/>
+    <input type="hidden" name="title" value="@title"/>
 
     <div>
         <label for="startDate" class="form-label">From</label>
@@ -31,7 +31,7 @@
                name="startDate"
                class="form-control"
                value="@startDate"
-               onchange="syncDateRange(); this.form.submit()" />
+               onchange="syncDateRange(); this.form.submit()"/>
     </div>
 
     <div>
@@ -41,7 +41,7 @@
                name="endDate"
                class="form-control"
                value="@endDate"
-               onchange="syncDateRange(); this.form.submit()" />
+               onchange="syncDateRange(); this.form.submit()"/>
     </div>
 
     <a asp-action="Index"
@@ -50,9 +50,9 @@
 </form>
 
 <form asp-action="Index" method="get" class="mb-3">
-    <input type="hidden" name="showCompleted" value="@showCompleted.ToString().ToLower()" />
-    <input type="hidden" name="startDate" value="@startDate" />
-    <input type="hidden" name="endDate" value="@endDate" />
+    <input type="hidden" name="showCompleted" value="@showCompleted.ToString().ToLower()"/>
+    <input type="hidden" name="startDate" value="@startDate"/>
+    <input type="hidden" name="endDate" value="@endDate"/>
 
     <div>
         <label for="title" class="form-label">Search by title</label>
@@ -61,7 +61,7 @@
                name="title"
                class="form-control"
                value="@title"
-               placeholder="Type a title..." />
+               placeholder="Type a title..."/>
         <button type="submit" class="btn btn-primary mt-2">Search</button>
         <a asp-action="Index"
            asp-route-showCompleted="@showCompleted"
@@ -72,16 +72,18 @@
 </form>
 
 <div class="d-flex gap-2 mb-3">
-<a asp-action="Create" class="btn btn-primary">+ Add New Item</a>
-@if (showCompleted)
-{
-    <a asp-action="Index" asp-route-startDate="@startDate" asp-route-endDate="@endDate" asp-route-title="@title" class="btn btn-outline-secondary">Hide Completed</a>
-}
+    <a asp-action="Create" class="btn btn-primary">+ Add New Item</a>
+    @if (showCompleted)
+    {
+        <a asp-action="Index" asp-route-startDate="@startDate" asp-route-endDate="@endDate" asp-route-title="@title"
+           class="btn btn-outline-secondary">Hide Completed</a>
+    }
 
-else
-{
-    <a asp-action="Index" asp-route-showCompleted="true" asp-route-startDate="@startDate" asp-route-endDate="@endDate" asp-route-title="@title" class="btn btn-outline-secondary">Show Completed</a>
-}
+    else
+    {
+        <a asp-action="Index" asp-route-showCompleted="true" asp-route-startDate="@startDate"
+           asp-route-endDate="@endDate" asp-route-title="@title" class="btn btn-outline-secondary">Show Completed</a>
+    }
 </div>
 
 @if (!visibleItems.Any())
@@ -100,7 +102,7 @@ else
                             <h5 class="card-title mb-1">@item.SourceItem.Title</h5>
                             <div class="text-muted small">
                                 @item.DisplayDateTime.ToString("dd/MM/yyyy HH:mm") · @item.SourceItem.ItemType
-                                
+
                                 @if (item.IsRecurring)
                                 {
                                     <span class="badge bg-secondary ms-1">Recurring</span>
@@ -143,9 +145,9 @@ else
                         @if (!item.IsRecurring)
                         {
                             if (item.IsCompleted)
-                                {
-                                    <span class="text-muted small">Completed item</span>
-                                }
+                            {
+                                <span class="text-muted small">Completed item</span>
+                            }
                             else
                             {
                                 <form asp-action="Complete" asp-route-id="@item.SourceItem.Id" method="post"
@@ -179,35 +181,35 @@ else
                                 }
                                 else
                                 {
-                                        <form asp-action="CompleteRecurringOccurrence" method="post" class="d-inline">
-                                            <input type="hidden" name="seriesId" value="@item.SeriesId.Value"/>
-                                            <input type="hidden" name="startDate" value="@startDate"/>
-                                            <input type="hidden" name="endDate" value="@endDate"/>
-                                            <input type="hidden" name="title" value="@title"/>
-                                            <input type="hidden" name="showCompleted" value="@showCompleted"/>
-                                            <input type="hidden" name="occurrenceDateTime"
-                                                   value="@item.DisplayDateTime.ToString("O")"/>
-                                            <button type="submit" class="btn btn-sm btn-success">Complete</button>
-                                        </form>
+                                    <form asp-action="CompleteRecurringOccurrence" method="post" class="d-inline">
+                                        <input type="hidden" name="seriesId" value="@item.SeriesId.Value"/>
+                                        <input type="hidden" name="startDate" value="@startDate"/>
+                                        <input type="hidden" name="endDate" value="@endDate"/>
+                                        <input type="hidden" name="title" value="@title"/>
+                                        <input type="hidden" name="showCompleted" value="@showCompleted"/>
+                                        <input type="hidden" name="occurrenceDateTime"
+                                               value="@item.DisplayDateTime.ToString("O")"/>
+                                        <button type="submit" class="btn btn-sm btn-success">Complete</button>
+                                    </form>
 
-                                        <form asp-action="CancelRecurringOccurrence" method="post" class="d-inline">
-                                            <input type="hidden" name="seriesId" value="@item.SeriesId.Value"/>
-                                            <input type="hidden" name="startDate" value="@startDate"/>
-                                            <input type="hidden" name="endDate" value="@endDate"/>
-                                            <input type="hidden" name="title" value="@title"/>
-                                            <input type="hidden" name="showCompleted" value="@showCompleted"/>
-                                            <input type="hidden" name="occurrenceDateTime"
-                                                   value="@item.DisplayDateTime.ToString("O")"/>
-                                            <button type="submit" class="btn btn-sm btn-light border">Skip event</button>
-                                        </form>
-                                        <form asp-action="StopRecurrence" method="post" class="d-inline">
-                                            <input type="hidden" name="startDate" value="@startDate"/>
-                                            <input type="hidden" name="endDate" value="@endDate"/>
-                                            <input type="hidden" name="title" value="@title"/>
-                                            <input type="hidden" name="showCompleted" value="@showCompleted"/>
-                                            <input type="hidden" name="seriesId" value="@item.SeriesId.Value"/>
-                                            <button type="submit" class="btn btn-sm btn-danger">Stop series</button>
-                                        </form>
+                                    <form asp-action="CancelRecurringOccurrence" method="post" class="d-inline">
+                                        <input type="hidden" name="seriesId" value="@item.SeriesId.Value"/>
+                                        <input type="hidden" name="startDate" value="@startDate"/>
+                                        <input type="hidden" name="endDate" value="@endDate"/>
+                                        <input type="hidden" name="title" value="@title"/>
+                                        <input type="hidden" name="showCompleted" value="@showCompleted"/>
+                                        <input type="hidden" name="occurrenceDateTime"
+                                               value="@item.DisplayDateTime.ToString("O")"/>
+                                        <button type="submit" class="btn btn-sm btn-light border">Skip event</button>
+                                    </form>
+                                    <form asp-action="StopRecurrence" method="post" class="d-inline">
+                                        <input type="hidden" name="startDate" value="@startDate"/>
+                                        <input type="hidden" name="endDate" value="@endDate"/>
+                                        <input type="hidden" name="title" value="@title"/>
+                                        <input type="hidden" name="showCompleted" value="@showCompleted"/>
+                                        <input type="hidden" name="seriesId" value="@item.SeriesId.Value"/>
+                                        <button type="submit" class="btn btn-sm btn-danger">Stop series</button>
+                                    </form>
                                 }
                             }
                         }
@@ -219,16 +221,16 @@ else
 }
 
 <script>
-function syncDateRange() {
-    const startDate = document.getElementById('startDate');
-    const endDate = document.getElementById('endDate');
+    function syncDateRange() {
+        const startDate = document.getElementById('startDate');
+        const endDate = document.getElementById('endDate');
 
-    if (!startDate || !endDate || !startDate.value || !endDate.value) {
-        return;
-    }
+        if (!startDate || !endDate || !startDate.value || !endDate.value) {
+            return;
+        }
 
-    if (endDate.value < startDate.value) {
-        endDate.value = startDate.value;
+        if (endDate.value < startDate.value) {
+            endDate.value = startDate.value;
+        }
     }
-}
 </script>

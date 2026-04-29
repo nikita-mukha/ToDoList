@@ -46,14 +46,14 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             .WithOne()
             .HasForeignKey<RecurringSeries>(r => r.SourceItemId)
             .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
-        
+
         modelBuilder.Entity<RecurringOccurrenceException>()
             .HasIndex(e => new
-                {
-                    e.UserId,
-                    e.SeriesId,
-                    e.OccurrenceDateTime
-                })
+            {
+                e.UserId,
+                e.SeriesId,
+                e.OccurrenceDateTime
+            })
             .IsUnique();
     }
 }
