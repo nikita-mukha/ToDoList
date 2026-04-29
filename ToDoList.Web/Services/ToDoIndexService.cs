@@ -82,7 +82,8 @@ public class ToDoIndexService : IToDoIndexService
                 SourceItem = item,
                 DisplayDateTime = item.TargetDayTime,
                 IsRecurring = false,
-                SeriesId = null
+                SeriesId = null,
+                IsCompleted = item.IsCompleted
             })
             .ToList();
 
@@ -103,7 +104,8 @@ public class ToDoIndexService : IToDoIndexService
                 SourceItem = sourceItem,
                 DisplayDateTime = occurrence.OccurrenceDateTime,
                 IsRecurring = true,
-                SeriesId = occurrence.SeriesId
+                SeriesId = occurrence.SeriesId,
+                IsCompleted = occurrence.IsCompleted
             });
         }
 

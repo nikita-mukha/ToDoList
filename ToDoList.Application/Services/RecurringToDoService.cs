@@ -8,11 +8,16 @@ public class RecurringToDoService : IRecurringToDoService
 {
     private readonly IRecurringSeriesStorage _recurringSeriesStorage;
     private readonly IToDoManager _toDoManager;
-
-    public RecurringToDoService(IRecurringSeriesStorage recurringSeriesStorage, IToDoManager toDoManager)
+    private readonly IRecurringOccurrenceExceptionStorage _recurringOccurrenceExceptionStorage;
+    
+    public RecurringToDoService(
+        IRecurringSeriesStorage recurringSeriesStorage,
+        IToDoManager toDoManager,
+        IRecurringOccurrenceExceptionStorage recurringOccurrenceExceptionStorage)
     {
         _recurringSeriesStorage = recurringSeriesStorage;
         _toDoManager = toDoManager;
+        _recurringOccurrenceExceptionStorage = recurringOccurrenceExceptionStorage;
     }
     
     public async Task CreateRecurringItemAsync(ToDoItem sourceItem,
@@ -48,4 +53,10 @@ public class RecurringToDoService : IRecurringToDoService
 
     public Task<bool> StopRecurringSeriesAsync(Guid seriesId, string userId) =>
         _recurringSeriesStorage.StopAsync(seriesId, userId);
+
+    public Task CompleteRecurringOccurrenceAsync(Guid seriesId, DateTime occurrenceDateTime, string userId) => 
+        _recurringOccurrenceExceptionStorage.CompleteAsync(userId, seriesId, occurrenceDateTime);
+
+    public Task CancelRecurringOccurrenceAsync(Guid seriesId, DateTime occurrenceDateTime, string userId) =>
+        _recurringOccurrenceExceptionStorage.CancelAsync(userId, seriesId, occurrenceDateTime);
 }

@@ -20,6 +20,7 @@ builder.Services.AddScoped<IRecurringOccurrenceGenerator, RecurringOccurrenceGen
 builder.Services.AddScoped<IRecurringOccurrenceService, RecurringOccurrenceService>();
 builder.Services.AddScoped<IRecurringToDoService, RecurringToDoService>();
 builder.Services.AddScoped<IToDoIndexService, ToDoIndexService>();
+builder.Services.AddScoped<IRecurringOccurrenceExceptionStorage, EfRecurringOccurrenceExceptionStorage>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=todos.db"));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

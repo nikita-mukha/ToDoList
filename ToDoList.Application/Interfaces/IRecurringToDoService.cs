@@ -11,4 +11,6 @@ public interface IRecurringToDoService
         int interval,
         DateTime? endDateTime);
     Task<bool> StopRecurringSeriesAsync(Guid seriesId, string userId);
+    Task CompleteRecurringOccurrenceAsync(Guid seriesId, DateTime occurrenceDateTime, string userId);
+    Task CancelRecurringOccurrenceAsync(Guid seriesId, DateTime occurrenceDateTime, string userId);
 }

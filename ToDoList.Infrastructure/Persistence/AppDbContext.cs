@@ -11,6 +11,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ToDoItem> Items { get; set; }
     public DbSet<ToDoEvent> Events { get; set; }
     public DbSet<RecurringSeries> RecurringSeries { get; set; }
+    public DbSet<RecurringOccurrenceException> RecurringOccurrenceExceptions { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -45,5 +46,14 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             .WithOne()
             .HasForeignKey<RecurringSeries>(r => r.SourceItemId)
             .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<RecurringOccurrenceException>()
+            .HasIndex(e => new
+                {
+                    e.UserId,
+                    e.SeriesId,
+                    e.OccurrenceDateTime
+                })
+            .IsUnique();
     }
 }

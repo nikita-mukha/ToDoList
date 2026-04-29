@@ -14,18 +14,15 @@ public class ToDoController : Controller
 {
     private readonly IToDoManager _toDoManager;
     private readonly IRecurringToDoService _recurringToDoService;
-    private readonly IRecurringOccurrenceService _recurringOccurrenceService;
     private readonly IToDoIndexService _toDoIndexService;
 
     public ToDoController(
         IToDoManager toDoManager, 
         IRecurringToDoService recurringToDoService, 
-        IRecurringOccurrenceService recurringOccurrenceService,
         IToDoIndexService toDoIndexService)
     {
         _toDoManager = toDoManager;
         _recurringToDoService = recurringToDoService;
-        _recurringOccurrenceService = recurringOccurrenceService;
         _toDoIndexService = toDoIndexService;
     }
 
@@ -119,19 +116,41 @@ public class ToDoController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(
+        Guid id, 
+        DateTime? startDate, 
+        DateTime? endDate, 
+        string? title, 
+        bool showCompleted)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         await _toDoManager.RemoveItemAsync(id, userId!);
-        return RedirectToAction("Index");
+        return RedirectToAction("Index", new
+        {
+            startDate,
+            endDate,
+            title,
+            showCompleted
+        });
     }
 
     [HttpPost]
-    public async Task<IActionResult> Complete(Guid id)
+    public async Task<IActionResult> Complete(
+        Guid id,
+        DateTime? startDate,
+        DateTime? endDate,
+        string? title, 
+        bool showCompleted)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         await _toDoManager.CompleteItemAsync(id, userId!);
-        return RedirectToAction("Index");
+        return RedirectToAction("Index", new
+        {
+            startDate,
+            endDate,
+            title,
+            showCompleted
+        });
     }
 
     public async Task<IActionResult> Edit(Guid id)
@@ -196,7 +215,12 @@ public class ToDoController : Controller
         $"{date.Year:D4}{date.Month:D2}{date.Day:D2}{date.Hour:D2}{date.Minute:D2}";
 
     [HttpPost]
-    public async Task<IActionResult> StopRecurrence(Guid seriesId)
+    public async Task<IActionResult> StopRecurrence(
+        Guid seriesId,
+        DateTime? startDate,
+        DateTime? endDate, 
+        string? title,
+        bool showCompleted)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var stopped = await _recurringToDoService.StopRecurringSeriesAsync(seriesId, userId!);
@@ -204,6 +228,56 @@ public class ToDoController : Controller
         if (!stopped)
             return NotFound();
         
-        return RedirectToAction("Index");
+        return RedirectToAction("Index", new
+        {
+            startDate,
+            endDate,
+            title,
+            showCompleted
+        });
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> CompleteRecurringOccurrence(
+        Guid seriesId, 
+        DateTime occurrenceDateTime,
+        DateTime? startDate,
+        DateTime? endDate, 
+        string? title,
+        bool showCompleted)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        await _recurringToDoService.CompleteRecurringOccurrenceAsync(seriesId, occurrenceDateTime, userId!);
+            
+        return RedirectToAction("Index", new
+        {
+            startDate,
+            endDate,
+            title,
+            showCompleted
+        });
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> CancelRecurringOccurrence(
+        Guid seriesId, 
+        DateTime occurrenceDateTime,
+        DateTime? startDate,
+        DateTime? endDate, 
+        string? title,
+        bool showCompleted)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        await _recurringToDoService.CancelRecurringOccurrenceAsync(seriesId, occurrenceDateTime, userId!);
+            
+        return RedirectToAction("Index", new
+        {
+            startDate,
+            endDate,
+            title,
+            showCompleted
+        });
     }
 }

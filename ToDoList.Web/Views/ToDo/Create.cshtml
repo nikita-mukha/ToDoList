@@ -66,7 +66,7 @@
 
     <div id="recurrenceFields" style="display:none">
         <div class="mb-3">
-            <label asp-for="RecurrenceFrequency" class="form-label">Repeat</label>
+            <label asp-for="RecurrenceFrequency" class="form-label">Frequency</label>
             <select asp-for="RecurrenceFrequency" class="form-select">
                 <option value="">Choose frequency</option>
                 @foreach (var frequency in Enum.GetValues<RecurrenceFrequency>())

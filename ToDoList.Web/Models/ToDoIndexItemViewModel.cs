@@ -8,4 +8,5 @@ public class ToDoIndexItemViewModel
     public Guid? SeriesId { get; set; }
     public bool IsRecurring { get; set; }
     public DateTime DisplayDateTime { get; set; }
+    public bool IsCompleted { get; set; }
 }

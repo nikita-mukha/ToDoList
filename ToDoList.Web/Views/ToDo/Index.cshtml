@@ -14,7 +14,7 @@
     }
     else
     {
-        visibleItems = Model.Where(item => !item.SourceItem.IsCompleted).ToList();
+        visibleItems = Model.Where(item => !item.IsCompleted).ToList();
     }
 }
 
@@ -91,7 +91,7 @@ else
 else
 {
     <div class="d-flex flex-column gap-3">
-        @foreach (var item in visibleItems.OrderBy(i => i.SourceItem.IsCompleted).ThenBy(i => i.DisplayDateTime))
+        @foreach (var item in visibleItems.OrderBy(i => i.DisplayDateTime))
         {
             <div class="card shadow-sm">
                 <div class="card-body">
@@ -108,7 +108,7 @@ else
                             </div>
                         </div>
 
-                        @if (item.SourceItem.IsCompleted)
+                        @if (item.IsCompleted)
                         {
                             <span class="badge bg-success">Completed</span>
                         }
@@ -142,26 +142,74 @@ else
                     <div class="d-flex gap-2 mt-3">
                         @if (!item.IsRecurring)
                         {
-                            @if (!item.SourceItem.IsCompleted)
+                            if (item.IsCompleted)
+                                {
+                                    <span class="text-muted small">Completed item</span>
+                                }
+                            else
                             {
-                                <form asp-action="Complete" asp-route-id="@item.SourceItem.Id" method="post" class="d-inline">
+                                <form asp-action="Complete" asp-route-id="@item.SourceItem.Id" method="post"
+                                      class="d-inline">
+                                    <input type="hidden" name="startDate" value="@startDate"/>
+                                    <input type="hidden" name="endDate" value="@endDate"/>
+                                    <input type="hidden" name="title" value="@title"/>
+                                    <input type="hidden" name="showCompleted" value="@showCompleted"/>
                                     <button type="submit" class="btn btn-sm btn-success">Complete</button>
                                 </form>
+
+                                <a asp-action="Edit" asp-route-id="@item.SourceItem.Id" class="btn btn-sm btn-warning">Edit</a>
+
+                                <form asp-action="Delete" asp-route-id="@item.SourceItem.Id" method="post"
+                                      class="d-inline">
+                                    <input type="hidden" name="startDate" value="@startDate"/>
+                                    <input type="hidden" name="endDate" value="@endDate"/>
+                                    <input type="hidden" name="title" value="@title"/>
+                                    <input type="hidden" name="showCompleted" value="@showCompleted"/>
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
                             }
-
-                            <a asp-action="Edit" asp-route-id="@item.SourceItem.Id" class="btn btn-sm btn-warning">Edit</a>
-
-                            <form asp-action="Delete" asp-route-id="@item.SourceItem.Id" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
                         }
-                        else 
+                        else
                         {
-                            <span class="badge bg-info text-dark">Recurring occurrence</span>
-                            <form asp-action="StopRecurrence" asp-route-id="@item.SeriesId.Value" method="post" class="d-inline">
-                                <input type="hidden" name="seriesId" value="@item.SeriesId.Value" />
-                                <button type="submit" class="btn btn-sm btn-danger">Stop recurrence</button>
-                            </form>
+                            @if (item.SeriesId.HasValue)
+                            {
+                                if (item.IsCompleted)
+                                {
+                                    <span class="text-muted small">Completed occurrence</span>
+                                }
+                                else
+                                {
+                                    <form asp-action="StopRecurrence" method="post" class="d-inline">
+                                        <input type="hidden" name="startDate" value="@startDate"/>
+                                        <input type="hidden" name="endDate" value="@endDate"/>
+                                        <input type="hidden" name="title" value="@title"/>
+                                        <input type="hidden" name="showCompleted" value="@showCompleted"/>
+                                        <input type="hidden" name="seriesId" value="@item.SeriesId.Value"/>
+                                        <button type="submit" class="btn btn-sm btn-danger">Stop series</button>
+                                    </form>
+                                        <form asp-action="CompleteRecurringOccurrence" method="post" class="d-inline">
+                                            <input type="hidden" name="seriesId" value="@item.SeriesId.Value"/>
+                                            <input type="hidden" name="startDate" value="@startDate"/>
+                                            <input type="hidden" name="endDate" value="@endDate"/>
+                                            <input type="hidden" name="title" value="@title"/>
+                                            <input type="hidden" name="showCompleted" value="@showCompleted"/>
+                                            <input type="hidden" name="occurrenceDateTime"
+                                                   value="@item.DisplayDateTime.ToString("O")"/>
+                                            <button type="submit" class="btn btn-sm btn-success">Complete</button>
+                                        </form>
+
+                                    <form asp-action="CancelRecurringOccurrence" method="post" class="d-inline">
+                                        <input type="hidden" name="seriesId" value="@item.SeriesId.Value"/>
+                                        <input type="hidden" name="startDate" value="@startDate"/>
+                                        <input type="hidden" name="endDate" value="@endDate"/>
+                                        <input type="hidden" name="title" value="@title"/>
+                                        <input type="hidden" name="showCompleted" value="@showCompleted"/>
+                                        <input type="hidden" name="occurrenceDateTime"
+                                               value="@item.DisplayDateTime.ToString("O")"/>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Skip</button>
+                                    </form>
+                                }
+                            }
                         }
                     </div>
                 </div>
